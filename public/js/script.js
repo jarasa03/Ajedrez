@@ -46,6 +46,7 @@ function crearNumeracionFila() {
         let divFila = document.createElement("div");
         divFila.innerText = fila;
         divFila.classList.add("numeracion-fila");
+        divFila.id = `fila-${fila}`
         numeracionContenedor.appendChild(divFila);
     }
 }
@@ -67,6 +68,7 @@ function crearNumeracionColumnas() {
         let divCol = document.createElement("div");
         divCol.innerText = columna;
         divCol.classList.add("numeracion-columna");
+        divCol.id = `columna-${columna}`
         numeracionContenedor.appendChild(divCol);
     });
 }
