@@ -1,0 +1,50 @@
+:root {
+    --tamanyo-marco: 1030px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0d9b5;
+}
+
+#marco {
+    display: flex;
+    width: var(--tamanyo-marco);
+    height: var(--tamanyo-marco);
+    background-color: #513f38;
+    justify-content: center;
+    align-items: center;
+}
+
+.tablero {
+    display: grid;
+    grid-template-columns: repeat(8, 120px);
+    grid-template-rows: repeat(8, 120px);
+    width: 960px;
+    height: 960px;
+}
+
+.casilla {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.CasillaBlanca {
+    background-color: #ffffb4;
+}
+
+.CasillaNegra {
+    background-color: #a0d1ce;
+}
