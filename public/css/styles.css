@@ -7,6 +7,11 @@
     --tamanyo-casilla: calc(var(--tamanyo-tablero) / 8);
 }
 
+@font-face {
+    font-family: "rocktown";
+    src: url(../assets/fonts/Rocktown.ttf);
+}
+
 * {
     box-sizing: border-box;
 }
@@ -29,19 +34,71 @@ body {
     color: black;
 }
 
+.numeracion-fila {
+    padding-bottom: 20px;
+}
+
+.numeracion-columna {
+    padding-right: 20px;
+}
+
 #numeracion-casillas {
     display: grid;
-    grid-template-columns: 35px repeat(8, 1fr) 35px;
-    grid-template-rows: 35px repeat(8, 1fr) 35px;
+    grid-template-columns: 35px 35px repeat(8, var(--tamanyo-casilla)) 35px;
+    grid-template-rows: 35px 35px repeat(8, var(--tamanyo-casilla)) 35px;
     width: calc(var(--tamanyo-marco) + 70px);
     height: calc(var(--tamanyo-marco) + 70px);
-    background-color: red;
+    font-family: "rocktown";
+    font-size: 50px;
+    color: var(--color-marco);
+}
+
+#fila-a {
+    grid-column: 3 / 4;
+}
+
+#columna-8 {
+    grid-row: 3 / 4;
+}
+
+#columna-7 {
+    grid-row: 4 / 5;
+}
+
+#columna-6 {
+    grid-row: 5 / 6;
+}
+
+#columna-5 {
+    grid-row: 6 / 7;
+}
+
+#columna-4 {
+    grid-row: 7 / 8;
+}
+
+#columna-3 {
+    grid-row: 8 / 9;
+}
+
+#columna-2 {
+    grid-row: 9 / 10;
+}
+
+#columna-1 {
+    grid-row: 10 / 11;
+}
+
+.numeracion-columna,
+.numeracion-fila {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #marco {
-    grid-column: 2 / -2;
-    grid-row: 2 / -2;
-    place-self: center;
+    grid-column: 2 / 10;
+    grid-row: 2 / 10;
     display: flex;
     width: var(--tamanyo-marco);
     height: var(--tamanyo-marco);

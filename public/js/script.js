@@ -31,46 +31,47 @@ function crearCasilla(fila, col) {
 }
 
 /**
- * Crea la numeración de las filas en el tablero de ajedrez.
- * Esta función genera los elementos HTML correspondientes a los números de las filas (1-8)
+ * Crea la numeración de las filas con letras (a-h).
+ * Esta función genera los elementos HTML correspondientes a las letras de las filas (a-h)
  * y los agrega al contenedor de numeración.
  * 
- * Recorre los números del 8 al 1, crea un `div` para cada número, asigna la clase CSS correspondiente
- * para la estilización y luego agrega cada `div` al contenedor de numeración en el DOM.
+ * Recorre el array `columnas` y para cada letra (fila), crea un `div` que contiene
+ * la letra y le asigna una clase CSS para la estilización.
+ * Luego, agrega cada `div` al contenedor de numeración en el DOM.
  * 
  * @function
  * @returns {void} No devuelve ningún valor. Modifica directamente el DOM añadiendo la numeración de las filas al contenedor correspondiente.
  */
 function crearNumeracionFila() {
-    for (let fila = 8; fila >= 1; fila--) {
+    columnas.forEach((columna) => {
         let divFila = document.createElement("div");
-        divFila.innerText = fila;
+        divFila.innerText = columna;
         divFila.classList.add("numeracion-fila");
-        divFila.id = `fila-${fila}`
+        divFila.id = `fila-${columna}`; // ID con letra de columna
         numeracionContenedor.appendChild(divFila);
-    }
+    });
 }
 
 /**
- * Crea la numeración de las columnas en el tablero de ajedrez.
- * Esta función genera los elementos HTML correspondientes a las letras de las columnas (a-h)
+ * Crea la numeración de las columnas con números (1-8).
+ * Esta función genera los elementos HTML correspondientes a los números de las columnas (1-8)
  * y los agrega al contenedor de numeración.
  * 
- * Recorre el array `columnas` y para cada letra (columna), crea un `div` que contiene
- * la letra y le asigna una clase CSS para la estilización.
+ * Recorre los números del 1 al 8 y para cada número (columna), crea un `div` que contiene
+ * el número y le asigna una clase CSS para la estilización.
  * Luego, agrega cada `div` al contenedor de numeración en el DOM.
  * 
  * @function
  * @returns {void} No devuelve ningún valor. Modifica directamente el DOM añadiendo la numeración de las columnas al contenedor correspondiente.
  */
 function crearNumeracionColumnas() {
-    columnas.forEach((columna) => {
+    for (let i = 1; i <= 8; i++) {
         let divCol = document.createElement("div");
-        divCol.innerText = columna;
+        divCol.innerText = i;
         divCol.classList.add("numeracion-columna");
-        divCol.id = `columna-${columna}`
+        divCol.id = `columna-${i}`; // ID con número de columna
         numeracionContenedor.appendChild(divCol);
-    });
+    }
 }
 
 /**
