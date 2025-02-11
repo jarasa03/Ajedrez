@@ -1,15 +1,16 @@
 :root {
     --tamanyo-marco: 1030px;
-    --color-marco: #513f38;
-    --color-casilla-blanca: #ffffb4;
-    --color-casilla-negra: #a0d1ce;
+    --color-marco: #FF1493;
+    --color-casilla-blanca: #f8cbe1;
+    --color-casilla-negra: #f37db0;
+    --color-fondo: #efbcee;
     --tamanyo-tablero: calc(var(--tamanyo-marco) - 70px);
     --tamanyo-casilla: calc(var(--tamanyo-tablero) / 8);
 }
 
 @font-face {
     font-family: "rocktown";
-    src: url(../assets/fonts/Rocktown.ttf);
+    src: url(../assets/fonts/GentyDemo-Regular.ttf);
 }
 
 * {
@@ -22,7 +23,16 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0d9b5;
+    background-color: var(--color-fondo);
+}
+
+.pieza {
+    font-size: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
 }
 
 .numeracion {
@@ -35,11 +45,11 @@ body {
 }
 
 .numeracion-fila {
-    padding-bottom: 20px;
+    padding-bottom: 25px;
 }
 
 .numeracion-columna {
-    padding-right: 20px;
+    padding-right: 25px;
 }
 
 #numeracion-casillas {
@@ -53,7 +63,7 @@ body {
     color: var(--color-marco);
 }
 
-#fila-a {
+#fila-A {
     grid-column: 3 / 4;
 }
 

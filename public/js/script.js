@@ -1,6 +1,44 @@
 const tablero = document.querySelector(".tablero");
-const columnas = ["a", "b", "c", "d", "e", "f", "g", "h"];
+const columnas = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const numeracionContenedor = document.getElementById("numeracion-casillas");
+
+const piezasIniciales = {
+    // Piezas negras en la fila 8 (arriba)
+    "A8": "♜",
+    "B8": "♞",
+    "C8": "♝",
+    "D8": "♛",
+    "E8": "♚",
+    "F8": "♝",
+    "G8": "♞",
+    "H8": "♜",
+    "A7": "♟",
+    "B7": "♟",
+    "C7": "♟",
+    "D7": "♟",
+    "E7": "♟",
+    "F7": "♟",
+    "G7": "♟",
+    "H7": "♟",
+
+    // Piezas blancas en la fila 1 (abajo)
+    "A1": "♖",
+    "B1": "♘",
+    "C1": "♗",
+    "D1": "♕",
+    "E1": "♔",
+    "F1": "♗",
+    "G1": "♘",
+    "H1": "♖",
+    "A2": "♙",
+    "B2": "♙",
+    "C2": "♙",
+    "D2": "♙",
+    "E2": "♙",
+    "F2": "♙",
+    "G2": "♙",
+    "H2": "♙"
+};
 
 /**
  * Crea una casilla en el tablero de ajedrez.
@@ -27,18 +65,20 @@ function crearCasilla(fila, col) {
         casilla.classList.add("casilla-negra");
     }
 
+    // Asignar pieza si corresponde
+    const pieza = piezasIniciales[casilla.id];
+    if (pieza) {
+        const piezaDiv = document.createElement("span");
+        piezaDiv.classList.add("pieza");
+        piezaDiv.innerText = pieza;
+        casilla.appendChild(piezaDiv);
+    }
+
     return casilla;
 }
 
 /**
  * Crea la numeración de las filas con letras (a-h).
- * Esta función genera los elementos HTML correspondientes a las letras de las filas (a-h)
- * y los agrega al contenedor de numeración.
- * 
- * Recorre el array `columnas` y para cada letra (fila), crea un `div` que contiene
- * la letra y le asigna una clase CSS para la estilización.
- * Luego, agrega cada `div` al contenedor de numeración en el DOM.
- * 
  * @function
  * @returns {void} No devuelve ningún valor. Modifica directamente el DOM añadiendo la numeración de las filas al contenedor correspondiente.
  */
@@ -54,13 +94,6 @@ function crearNumeracionFila() {
 
 /**
  * Crea la numeración de las columnas con números (1-8).
- * Esta función genera los elementos HTML correspondientes a los números de las columnas (1-8)
- * y los agrega al contenedor de numeración.
- * 
- * Recorre los números del 1 al 8 y para cada número (columna), crea un `div` que contiene
- * el número y le asigna una clase CSS para la estilización.
- * Luego, agrega cada `div` al contenedor de numeración en el DOM.
- * 
  * @function
  * @returns {void} No devuelve ningún valor. Modifica directamente el DOM añadiendo la numeración de las columnas al contenedor correspondiente.
  */
@@ -76,11 +109,6 @@ function crearNumeracionColumnas() {
 
 /**
  * Crea el tablero de ajedrez con las casillas correspondientes.
- * Esta función crea un fragmento de documento con todas las casillas del tablero y lo agrega al contenedor del tablero.
- * 
- * El tablero se construye de tal forma que las casillas se añaden en un bucle de filas y columnas. Cada casilla se crea llamando
- * a la función `crearCasilla` con los parámetros correspondientes de fila y columna.
- * 
  * @function
  * @returns {void} No devuelve ningún valor. Modifica directamente el DOM añadiendo el tablero al contenedor correspondiente.
  */
@@ -94,7 +122,6 @@ function crearTablero() {
     }
     tablero.appendChild(fragment);
 }
-
 
 // Llamar las funciones para generar el tablero y la numeración
 crearTablero(); // Crea el tablero con las casillas
