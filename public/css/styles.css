@@ -20,7 +20,28 @@ body {
     background-color: #f0d9b5;
 }
 
+.numeracion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+
+#numeracion-casillas {
+    display: grid;
+    grid-template-columns: 35px repeat(8, 1fr) 35px;
+    grid-template-rows: 35px repeat(8, 1fr) 35px;
+    width: calc(var(--tamanyo-marco) + 70px);
+    height: calc(var(--tamanyo-marco) + 70px);
+    background-color: red;
+}
+
 #marco {
+    grid-column: 2 / -2;
+    grid-row: 2 / -2;
+    place-self: center;
     display: flex;
     width: var(--tamanyo-marco);
     height: var(--tamanyo-marco);
