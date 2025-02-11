@@ -27,12 +27,24 @@ body {
 }
 
 .pieza {
-    font-size: 120px;
-    height: 120px;
+    font-size: 100px;
+    width: 50%;
+    height: 70%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding-top: 20px;
+    color: #000000;
+    position: absolute;
+    bottom: 45px;
+    transition: color 0.3s ease-in-out;
+}
+
+.pieza:hover {
+    color: #0000005d;
+    cursor: grab;
+}
+
+.pieza:active {
+    cursor: grabbing;
 }
 
 .numeracion {
@@ -133,11 +145,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: filter 0.3s ease-in-out;
-}
-
-.casilla:hover {
-    filter: brightness(0.8);
+    position: relative;
 }
 
 .casilla-blanca {
