@@ -38,7 +38,37 @@ export class Alfil extends Pieza {
     }
 
     mover(nuevaPosicion) {
-        // TODO: Implementar el movimiento del alfil
+        const movimientosValidos = this.calcularMovimientos();
+
+        // Si la nueva posición no está en los movimientos válidos, no hacer nada
+        if (!movimientosValidos.includes(nuevaPosicion)) {
+            return false;
+        }
+
+        // Obtener la casilla actual y la nueva casilla
+        const casillaActual = document.querySelector(`#${this.posicion.toUpperCase()}`);
+        const casillaNueva = document.querySelector(`#${nuevaPosicion.toUpperCase()}`);
+
+        if (!casillaNueva) {
+            return false;
+        }
+
+        // Eliminar la pieza de la casilla actual
+        if (casillaActual) {
+            const piezaElemento = casillaActual.querySelector(".pieza");
+
+            if (piezaElemento) {
+                piezaElemento.remove();
+            }
+        }
+
+        // Actualizar la posición en el objeto de la pieza
+        this.posicion = nuevaPosicion;
+
+        // Colocar la pieza en la nueva casilla visualmente
+        this.colocarEnTablero();
+
+        return true;
     }
 
     calcularMovimientos() {
@@ -72,7 +102,7 @@ export class Alfil extends Pieza {
                     break; // Si se sale del tablero, detenerse
                 }
 
-                const nuevaPosicion = arrayLetras[nuevaColumna] + (nuevaFila + 1);
+                const nuevaPosicion = (arrayLetras[nuevaColumna] + (nuevaFila + 1)).toUpperCase();
                 const piezaEnDestino = tablero.obtenerPieza(nuevaPosicion);
 
                 // Si la casilla está vacía, el alfil puede moverse allí
