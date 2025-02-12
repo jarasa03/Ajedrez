@@ -5,7 +5,9 @@ import { Reina } from "./Piezas/Reina.js";
 import { Rey } from "./Piezas/Rey.js";
 import { Peon } from "./Piezas/Peon.js";
 
-const tablero = document.querySelector(".tablero");
+import { tablero } from "./Tablero.js";
+
+const tableroMain = document.querySelector(".tablero");
 const columnas = ["A", "B", "C", "D", "E", "F", "G", "H"];
 const numeracionContenedor = document.getElementById("numeracion-casillas");
 
@@ -125,12 +127,6 @@ function obtenerSimboloPieza(pieza) {
     return simbolos[pieza.tipo][pieza.color];
 }
 
-
-
-
-
-
-
 /**
  * Crea la numeración de las filas con letras (a-h).
  * @function
@@ -174,10 +170,20 @@ function crearTablero() {
             fragment.appendChild(casilla);
         }
     }
-    tablero.appendChild(fragment);
+    tableroMain.appendChild(fragment);
 }
 
 // Llamar las funciones para generar el tablero y la numeración
 crearTablero(); // Crea el tablero con las casillas
 crearNumeracionFila(); // Crea la numeración de filas
 crearNumeracionColumnas(); // Crea la numeración de columnas
+
+console.log(tablero.casillas);
+
+const caballoBlanco = new Alfil("blanca", "B6");
+
+// Calcular los movimientos posibles del caballo
+const movimientosPosibles = caballoBlanco.calcularMovimientos();
+
+// Mostrar los movimientos posibles en la consola
+console.log("Movimientos posibles para el caballo blanco en B6:", movimientosPosibles);

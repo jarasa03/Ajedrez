@@ -5,7 +5,11 @@ export class Peon extends Pieza {
         super(color, "Peon", posicion)
     }
 
-    mover() {
+    mover(nuevaPosicion) {
         // TODO: Hacer que se mueva
+    }
+
+    calcularMovimientos() {
+        // TODO: Calculo de movimientos posibles
     }
 }

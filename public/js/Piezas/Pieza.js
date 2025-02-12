@@ -1,3 +1,5 @@
+import { tablero } from "../Tablero.js";
+
 export class Pieza {
     constructor(color, tipo, posicion) {
 
@@ -8,9 +10,16 @@ export class Pieza {
         this.color = color;
         this.tipo = tipo;
         this.posicion = posicion;
+
+        // Marcar la posición de la pieza en el tablero
+        tablero.ocuparCasilla(this.posicion, this);
     }
 
     mover() {
-        throw new Error("Método 'mover' debe ser implementado por la subclase")
+        throw new Error("Método 'mover' debe ser implementado por la subclase");
+    }
+
+    calcularMovimientos() {
+        throw new Error("Método 'calcularMovimientos' debe ser implementado por la subclase");
     }
 }

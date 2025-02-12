@@ -5,7 +5,11 @@ export class Torre extends Pieza {
         super(color, "Torre", posicion)
     }
 
-    mover() {
+    mover(nuevaPosicion) {
         // TODO: Hacer que se mueva
+    }
+
+    calcularMovimientos() {
+        // TODO: Calculo de movimientos posibles
     }
 }

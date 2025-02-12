@@ -5,7 +5,11 @@ export class Rey extends Pieza {
         super(color, "Rey", posicion)
     }
 
-    mover() {
+    mover(nuevaPosicion) {
         // TODO: Hacer que se mueva
+    }
+
+    calcularMovimientos() {
+        // TODO: Calculo de movimientos posibles
     }
 }
