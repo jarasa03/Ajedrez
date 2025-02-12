@@ -1,10 +1,11 @@
 :root {
-    --tamanyo-marco: 1030px;
+    --tamanyo-marco: min(80vw, 80vh);
     --color-marco: #FF1493;
     --color-casilla-blanca: #f8cbe1;
     --color-casilla-negra: #f37db0;
     --color-fondo: #efbcee;
-    --tamanyo-tablero: calc(var(--tamanyo-marco) - 70px);
+    --color-piezas: black;
+    --tamanyo-tablero: calc(var(--tamanyo-marco) - 3vw);
     --tamanyo-casilla: calc(var(--tamanyo-tablero) / 8);
 }
 
@@ -27,19 +28,19 @@ body {
 }
 
 .pieza {
-    font-size: 100px;
+    font-size: calc(var(--tamanyo-casilla) * 0.8);
     width: 50%;
     height: 70%;
     display: flex;
     justify-content: center;
-    color: #000000;
+    color: var(--color-piezas);
     position: absolute;
-    bottom: 45px;
+    bottom: calc(var(--tamanyo-casilla) * 0.35);
     transition: color 0.3s ease-in-out;
 }
 
 .pieza:hover {
-    color: #0000005d;
+    color: rgba(0, 0, 0, 0.4);
     cursor: grab;
 }
 
@@ -51,9 +52,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
     font-weight: bold;
-    color: black;
 }
 
 .numeracion-fila {
@@ -66,12 +65,12 @@ body {
 
 #numeracion-casillas {
     display: grid;
-    grid-template-columns: 35px 35px repeat(8, var(--tamanyo-casilla)) 35px;
-    grid-template-rows: 35px 35px repeat(8, var(--tamanyo-casilla)) 35px;
-    width: calc(var(--tamanyo-marco) + 70px);
-    height: calc(var(--tamanyo-marco) + 70px);
+    grid-template-columns: calc(var(--tamanyo-marco) * 0.035) 1.5vw repeat(8, var(--tamanyo-casilla)) 1.5vw;
+    grid-template-rows: calc(var(--tamanyo-marco) * 0.035) 1.5vw repeat(8, var(--tamanyo-casilla)) 1.5vw;
+    width: var(--tamanyo-marco);
+    height: var(--tamanyo-marco);
     font-family: "rocktown";
-    font-size: 50px;
+    font-size: calc(var(--tamanyo-casilla) * 0.45);
     color: var(--color-marco);
 }
 
