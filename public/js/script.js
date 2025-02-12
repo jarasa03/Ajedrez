@@ -43,6 +43,8 @@ const piezasIniciales = {
 /**
  * Crea una casilla del tablero de ajedrez, asigna un color según su posición
  * y coloca la pieza correspondiente (si existe) en la casilla.
+ * Además, asigna atributos de accesibilidad como `role` y `aria-label` tanto a las casillas
+ * como a las piezas.
  * 
  * @param {number} fila - Número de la fila de la casilla (1 a 8).
  * @param {number} col - Número de la columna de la casilla (0 a 7, representando las columnas a-h).
@@ -52,6 +54,13 @@ const piezasIniciales = {
  * @example
  * // Crear una casilla en la fila 1 y columna 0 (esquina inferior izquierda)
  * const casillaA1 = crearCasilla(1, 0);
+ * 
+ * @description
+ * Esta función también genera un ID único para cada pieza combinando el tipo de pieza
+ * (como "torre blanca") y su posición en el tablero (por ejemplo, "a1"). Además, se asignan roles
+ * y descripciones accesibles usando `aria-label`, lo que mejora la experiencia para usuarios con discapacidades.
+ * 
+ * @see {piezasIniciales} Para cómo se inicializan las piezas en el tablero.
  */
 function crearCasilla(fila, col) {
     const casilla = document.createElement("div");
@@ -78,55 +87,67 @@ function crearCasilla(fila, col) {
         piezaDiv.classList.add("pieza");
         piezaDiv.innerText = pieza;
 
-        // Añadir rol y aria-label para describir la pieza de las piezas
+        // Añadir rol y aria-label para describir la pieza de las piezas además de un id único a cada pieza
         switch (pieza) {
             case "♖":
                 piezaDiv.setAttribute("aria-label", "Torre blanca");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `torre-blanca-${columnas[col]}${fila}`;
                 break;
             case "♘":
                 piezaDiv.setAttribute("aria-label", "Caballo blanco");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `caballo-blanco-${columnas[col]}${fila}`;
                 break;
             case "♗":
                 piezaDiv.setAttribute("aria-label", "Alfil blanco");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `alfil-blanco-${columnas[col]}${fila}`;
                 break;
             case "♕":
                 piezaDiv.setAttribute("aria-label", "Reina blanca");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `reina-blanca-${columnas[col]}${fila}`;
                 break;
             case "♔":
                 piezaDiv.setAttribute("aria-label", "Rey blanco");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `rey-blanco-${columnas[col]}${fila}`;
                 break;
             case "♙":
                 piezaDiv.setAttribute("aria-label", "Peón blanco");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `peon-blanco-${columnas[col]}${fila}`;
                 break;
             case "♜":
                 piezaDiv.setAttribute("aria-label", "Torre negra");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `torre-negra-${columnas[col]}${fila}`;
                 break;
             case "♞":
                 piezaDiv.setAttribute("aria-label", "Caballo negro");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `caballo-negro-${columnas[col]}${fila}`;
                 break;
             case "♝":
                 piezaDiv.setAttribute("aria-label", "Alfil negro");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `alfil-negro-${columnas[col]}${fila}`;
                 break;
             case "♛":
                 piezaDiv.setAttribute("aria-label", "Reina negra");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `reina-negra-${columnas[col]}${fila}`;
                 break;
             case "♚":
                 piezaDiv.setAttribute("aria-label", "Rey negro");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `rey-negro-${columnas[col]}${fila}`;
                 break;
             case "♟":
                 piezaDiv.setAttribute("aria-label", "Peón negro");
                 piezaDiv.setAttribute("role", "img");
+                piezaDiv.id = `peon-negro-${columnas[col]}${fila}`;
                 break;
             default:
                 piezaDiv.setAttribute("aria-label", "Casilla vacía");
