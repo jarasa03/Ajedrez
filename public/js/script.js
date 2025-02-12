@@ -67,6 +67,10 @@ function crearCasilla(fila, col) {
         casilla.classList.add("casilla-negra");
     }
 
+    // Asignar rol y aria-label para accesibilidad de las casillas
+    casilla.setAttribute("role", "gridcell");
+    casilla.setAttribute("aria-label", casilla.id);
+
     // Asignar pieza si corresponde
     const pieza = piezasIniciales[casilla.id];
     if (pieza) {
@@ -74,7 +78,7 @@ function crearCasilla(fila, col) {
         piezaDiv.classList.add("pieza");
         piezaDiv.innerText = pieza;
 
-        // Añadir aria-label para describir la pieza
+        // Añadir rol y aria-label para describir la pieza de las piezas
         switch (pieza) {
             case "♖":
                 piezaDiv.setAttribute("aria-label", "Torre blanca");
