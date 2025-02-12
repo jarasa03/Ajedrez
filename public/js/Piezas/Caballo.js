@@ -4,6 +4,38 @@ import { tablero } from "../Tablero.js";
 export class Caballo extends Pieza {
     constructor(color, posicion) {
         super(color, "Caballo", posicion);
+                
+        // Colocamos la pieza en su casilla
+        this.colocarEnTablero();
+    }
+
+    colocarEnTablero() {
+        const casilla = document.querySelector(`#${this.posicion.toUpperCase()}`);
+        if (casilla) {
+            const piezaDiv = document.createElement("span");
+            piezaDiv.classList.add("pieza");
+            piezaDiv.classList.add("caballo");
+            piezaDiv.innerText = this.obtenerSimboloPieza();
+            
+            // Asignar ID y atributos de accesibilidad
+            piezaDiv.setAttribute("id", this.posicion);  // Asignar id de la casilla
+            piezaDiv.setAttribute("role", "img");  // Especifica que es una imagen
+            piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Caballo blanco)
+
+            // Añadir clases para el color de la pieza
+            piezaDiv.classList.add(this.color === "blanca" ? "pieza-blanca" : "pieza-negra");
+
+            // Colocar la pieza en la casilla correspondiente
+            casilla.appendChild(piezaDiv);
+        }
+    }
+
+    obtenerSimboloPieza() {
+        // Devolver el símbolo correspondiente del caballo
+        if (this.constructor.name === "Caballo") {
+            return this.color === "blanca" ? "♘" : "♞"; // Caballo blanco o negro
+        }
+        return "";
     }
 
     mover(nuevaPosicion) {
@@ -22,7 +54,7 @@ export class Caballo extends Pieza {
             console.log("Error: Columna inválida.");
             return movimientosPosibles;
         }
-    
+
         const direcciones = [
             { x: 1, y: 2 }, { x: 2, y: 1 }, { x: -1, y: 2 }, { x: -2, y: 1 },
             { x: 1, y: -2 }, { x: 2, y: -1 }, { x: -1, y: -2 }, { x: -2, y: -1 }
@@ -31,16 +63,16 @@ export class Caballo extends Pieza {
         for (const dir of direcciones) {
             const nuevaColumna = columna + dir.x;
             const nuevaFila = fila + dir.y;
-    
+
             // Verificar si la nueva posición está dentro de los límites del tablero (0-7)
             if (nuevaColumna >= 0 && nuevaColumna < 8 && nuevaFila >= 0 && nuevaFila < 8) {
                 const nuevaPosicion = arrayLetras[nuevaColumna] + (nuevaFila + 1); // Convertir la fila a 1-8
-    
+
                 console.log(`Comprobando: nuevaPosicion = ${nuevaPosicion}`);
-    
+
                 // Obtener la pieza en la nueva casilla
                 const piezaEnDestino = tablero.obtenerPieza(nuevaPosicion);
-    
+
                 // Si la casilla está vacía o tiene una pieza enemiga, el caballo puede moverse allí
                 if (!piezaEnDestino || piezaEnDestino.color !== this.color) {
                     movimientosPosibles.push(nuevaPosicion);
@@ -52,7 +84,7 @@ export class Caballo extends Pieza {
                 console.log(`Fuera de los límites: nuevaPosicion = ${arrayLetras[nuevaColumna]}${nuevaFila + 1}`);
             }
         }
-    
+
         return movimientosPosibles;
     }
 }

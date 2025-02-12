@@ -4,6 +4,37 @@ import { tablero } from "../Tablero.js";
 export class Reina extends Pieza {
     constructor(color, posicion) {
         super(color, "Reina", posicion);
+        // Colocamos la pieza en su casilla
+        this.colocarEnTablero();
+    }
+
+    colocarEnTablero() {
+        const casilla = document.querySelector(`#${this.posicion.toUpperCase()}`);
+        if (casilla) {
+            const piezaDiv = document.createElement("span");
+            piezaDiv.classList.add("pieza");
+            piezaDiv.classList.add("reina");
+            piezaDiv.innerText = this.obtenerSimboloPieza();
+
+            // Asignar ID y atributos de accesibilidad
+            piezaDiv.setAttribute("id", this.posicion);  // Asignar id de la casilla
+            piezaDiv.setAttribute("role", "img");  // Especifica que es una imagen
+            piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Reina blanca)
+
+            // Añadir clases para el color de la pieza
+            piezaDiv.classList.add(this.color === "blanca" ? "pieza-blanca" : "pieza-negra");
+
+            // Colocar la pieza en la casilla correspondiente
+            casilla.appendChild(piezaDiv);
+        }
+    }
+
+    obtenerSimboloPieza() {
+        // Devolver el símbolo correspondiente de la reina
+        if (this.constructor.name === "Reina") {
+            return this.color === "blanca" ? "♕" : "♛"; // Reina blanca o negra
+        }
+        return "";
     }
 
     mover(nuevaPosicion) {

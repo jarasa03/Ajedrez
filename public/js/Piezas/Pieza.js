@@ -22,4 +22,8 @@ export class Pieza {
     calcularMovimientos() {
         throw new Error("Método 'calcularMovimientos' debe ser implementado por la subclase");
     }
+
+    colocarEnTablero() {
+        throw new Error("Método 'colocarEnTablero' debe ser implementado por la subclase");
+    }
 }

@@ -4,10 +4,40 @@ import { tablero } from "../Tablero.js";
 export class Torre extends Pieza {
     constructor(color, posicion) {
         super(color, "Torre", posicion);
+
+        // Colocamos la pieza en su casilla
+        this.colocarEnTablero();
+    }
+
+    colocarEnTablero() {
+        // Asegurarse de que el id coincida con la posición de la pieza
+        const casilla = document.querySelector(`#${this.posicion.toUpperCase()}`);
+        if (casilla) {
+            const piezaDiv = document.createElement("span");
+            piezaDiv.classList.add("pieza");
+            piezaDiv.classList.add("torre");
+            piezaDiv.innerText = this.obtenerSimboloPieza(); // Aseguramos que el símbolo sea correcto
+            
+            piezaDiv.setAttribute("id", this.posicion);  // Asignar id de la casilla
+            piezaDiv.setAttribute("role", "img");  // Especifica que es una imagen
+            piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Torre blanca)
+            
+            piezaDiv.classList.add(this.color === "blanca" ? "pieza-blanca" : "pieza-negra");
+
+            casilla.appendChild(piezaDiv); // Colocamos la pieza en la casilla
+        }
+    }
+
+    obtenerSimboloPieza() {
+        // Retorna el símbolo según el color de la pieza
+        if (this.constructor.name === "Torre") {
+            return this.color === "blanca" ? "♖" : "♜"; // Torre blanca o negra
+        }
+        return "";
     }
 
     mover(nuevaPosicion) {
-        // TODO: Hacer que se mueva
+        // TODO: Implementar movimiento de la torre
     }
 
     calcularMovimientos() {

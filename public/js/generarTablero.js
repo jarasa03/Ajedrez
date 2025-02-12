@@ -5,14 +5,9 @@ import { Reina } from "./Piezas/Reina.js";
 import { Rey } from "./Piezas/Rey.js";
 import { Peon } from "./Piezas/Peon.js";
 
-import { tablero } from "./Tablero.js";
-
-const tableroMain = document.querySelector(".tablero");
 const columnas = ["A", "B", "C", "D", "E", "F", "G", "H"];
-const numeracionContenedor = document.getElementById("numeracion-casillas");
 
 const piezasIniciales = {
-    // Piezas negras en la fila 8 (arriba)
     "A8": new Torre("negra", "a8"),
     "B8": new Caballo("negra", "b8"),
     "C8": new Alfil("negra", "c8"),
@@ -29,8 +24,6 @@ const piezasIniciales = {
     "F7": new Peon("negra", "f7"),
     "G7": new Peon("negra", "g7"),
     "H7": new Peon("negra", "h7"),
-
-    // Piezas blancas en la fila 1 (abajo)
     "A1": new Torre("blanca", "a1"),
     "B1": new Caballo("blanca", "b1"),
     "C1": new Alfil("blanca", "c1"),
@@ -49,62 +42,40 @@ const piezasIniciales = {
     "H2": new Peon("blanca", "h2")
 };
 
+const tableroMain = document.querySelector(".tablero");
+const numeracionContenedor = document.getElementById("numeracion-casillas");
+
 /**
- * Crea una casilla del tablero de ajedrez, asigna un color según su posición
- * y coloca la pieza correspondiente (si existe) en la casilla.
- * Además, asigna atributos de accesibilidad como `role` y `aria-label` tanto a las casillas
- * como a las piezas.
- * 
- * @param {number} fila - Número de la fila de la casilla (1 a 8).
- * @param {number} col - Número de la columna de la casilla (0 a 7, representando las columnas a-h).
- * 
- * @returns {HTMLElement} La casilla creada, con su ID, color y pieza correspondiente (si hay una).
- * 
- * @example
- * // Crear una casilla en la fila 1 y columna 0 (esquina inferior izquierda)
- * const casillaA1 = crearCasilla(1, 0);
- * 
- * @description
- * Esta función también genera un ID único para cada pieza combinando el tipo de pieza
- * (como "torre blanca") y su posición en el tablero (por ejemplo, "a1"). Además, se asignan roles
- * y descripciones accesibles usando `aria-label`, lo que mejora la experiencia para usuarios con discapacidades.
- * 
- * @see {piezasIniciales} Para cómo se inicializan las piezas en el tablero.
+ * Crea una casilla del tablero, asigna color y coloca la pieza si existe.
+ * @param {number} fila - Número de la fila (1 a 8).
+ * @param {number} col - Número de la columna (0 a 7).
+ * @returns {HTMLElement} La casilla creada.
  */
 function crearCasilla(fila, col) {
     const casilla = document.createElement("div");
     casilla.classList.add("casilla");
-
-    // Generar ID en formato "a1", "b2", etc.
     casilla.id = columnas[col] + fila;
 
-    // Asignar color según la posición
-    if ((fila + col) % 2 === 0) {
-        casilla.classList.add("casilla-blanca");
-    } else {
-        casilla.classList.add("casilla-negra");
-    }
+    casilla.classList.add((fila + col) % 2 === 0 ? "casilla-blanca" : "casilla-negra");
 
-    // Asignar rol y aria-label para accesibilidad de las casillas
-    casilla.setAttribute("role", "gridcell");
-    casilla.setAttribute("aria-label", casilla.id);
-
-    // Asignar pieza si corresponde
+    // Asignamos la pieza si existe
     const pieza = piezasIniciales[casilla.id];
     if (pieza) {
         const piezaDiv = document.createElement("span");
         piezaDiv.classList.add("pieza");
 
-        // Usamos el tipo de la pieza para establecer su representación visual
-        piezaDiv.innerText = obtenerSimboloPieza(pieza);
-
-        // Añadir rol y aria-label para describir la pieza
-        piezaDiv.setAttribute("role", "img");
-        piezaDiv.setAttribute("aria-label", `${pieza.tipo} ${pieza.color === "blanca" ? "blanca" : "negra"}`);
-        piezaDiv.id = `${pieza.tipo.toLowerCase()}-${pieza.color}-${columnas[col]}${fila}`;
-
-        // Añadir el color correspondiente (blanco o negro)
-        piezaDiv.classList.add(pieza.color === "blanca" ? "pieza-blanca" : "pieza-negra");
+        // Asignamos un símbolo visual según el tipo de pieza
+        piezaDiv.innerText = pieza.constructor.name === "Peon" ?
+            pieza.color === "blanca" ? "♙" : "♟" :
+            pieza.constructor.name === "Torre" ?
+            pieza.color === "blanca" ? "♖" : "♜" :
+            pieza.constructor.name === "Caballo" ?
+            pieza.color === "blanca" ? "♘" : "♞" :
+            pieza.constructor.name === "Alfil" ?
+            pieza.color === "blanca" ? "♗" : "♝" :
+            pieza.constructor.name === "Reina" ?
+            pieza.color === "blanca" ? "♕" : "♛" :
+            pieza.color === "blanca" ? "♔" : "♚";
 
         casilla.appendChild(piezaDiv);
     }
@@ -112,55 +83,40 @@ function crearCasilla(fila, col) {
     return casilla;
 }
 
-// Función que devuelve el símbolo de la pieza según el tipo y color
-function obtenerSimboloPieza(pieza) {
-    const simbolos = {
-        "Peon": { blanca: "♙", negra: "♟" },
-        "Torre": { blanca: "♖", negra: "♜" },
-        "Caballo": { blanca: "♘", negra: "♞" },
-        "Alfil": { blanca: "♗", negra: "♝" },
-        "Reina": { blanca: "♕", negra: "♛" },
-        "Rey": { blanca: "♔", negra: "♚" }
-    };
-
-    // Retornar el símbolo correspondiente dependiendo del color de la pieza
-    return simbolos[pieza.tipo][pieza.color];
-}
-
 /**
- * Crea la numeración de las filas con letras (a-h).
- * @function
- * @returns {void} No devuelve ningún valor. Modifica directamente el DOM añadiendo la numeración de las filas al contenedor correspondiente.
+ * Crea la numeración de las filas con letras (A-H).
  */
 function crearNumeracionFila() {
     columnas.forEach((columna) => {
         let divFila = document.createElement("div");
         divFila.innerText = columna;
         divFila.classList.add("numeracion-fila");
-        divFila.id = `fila-${columna}`; // ID con letra de columna
+        divFila.id = `fila-${columna}`;
         numeracionContenedor.appendChild(divFila);
     });
 }
 
 /**
  * Crea la numeración de las columnas con números (1-8).
- * @function
- * @returns {void} No devuelve ningún valor. Modifica directamente el DOM añadiendo la numeración de las columnas al contenedor correspondiente.
  */
 function crearNumeracionColumnas() {
     for (let i = 1; i <= 8; i++) {
         let divCol = document.createElement("div");
         divCol.innerText = i;
         divCol.classList.add("numeracion-columna");
-        divCol.id = `columna-${i}`; // ID con número de columna
+        divCol.id = `columna-${i}`;
         numeracionContenedor.appendChild(divCol);
     }
 }
 
+function colocarPiezasEnTablero() {
+    Object.values(piezasIniciales).forEach(pieza => {
+        pieza.colocarEnTablero();  // Llama a colocarEnTablero para cada pieza
+    });
+}
+
 /**
- * Crea el tablero de ajedrez con las casillas correspondientes.
- * @function
- * @returns {void} No devuelve ningún valor. Modifica directamente el DOM añadiendo el tablero al contenedor correspondiente.
+ * Crea el tablero de ajedrez con las casillas.
  */
 function crearTablero() {
     const fragment = document.createDocumentFragment();
@@ -171,19 +127,12 @@ function crearTablero() {
         }
     }
     tableroMain.appendChild(fragment);
+
+    colocarPiezasEnTablero();
 }
 
 // Llamar las funciones para generar el tablero y la numeración
-crearTablero(); // Crea el tablero con las casillas
-crearNumeracionFila(); // Crea la numeración de filas
-crearNumeracionColumnas(); // Crea la numeración de columnas
+crearTablero();
+crearNumeracionFila();
+crearNumeracionColumnas();
 
-console.log(tablero.casillas);
-
-const caballoBlanco = new Alfil("blanca", "B6");
-
-// Calcular los movimientos posibles del caballo
-const movimientosPosibles = caballoBlanco.calcularMovimientos();
-
-// Mostrar los movimientos posibles en la consola
-console.log("Movimientos posibles para el caballo blanco en B6:", movimientosPosibles);
