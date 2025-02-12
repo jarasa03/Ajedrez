@@ -51,11 +51,11 @@ body {
     color: var(--color-piezas);
     position: absolute;
     bottom: var(--posicion-pieza);
-    transition: color 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .pieza:hover {
-    color: var(--color-piezas-hover);
+    opacity: 0.4;
     cursor: grab;
 }
 
