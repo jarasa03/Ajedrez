@@ -41,15 +41,17 @@ const piezasIniciales = {
 };
 
 /**
- * Crea una casilla en el tablero de ajedrez.
+ * Crea una casilla del tablero de ajedrez, asigna un color según su posición
+ * y coloca la pieza correspondiente (si existe) en la casilla.
  * 
- * Esta función genera un elemento `div` que representa una casilla en el tablero.
- * La casilla se identifica con un ID en formato "a1", "b2", etc., y se le asigna un color
- * (blanco o negro) dependiendo de su posición en el tablero, siguiendo la lógica de ajedrez.
+ * @param {number} fila - Número de la fila de la casilla (1 a 8).
+ * @param {number} col - Número de la columna de la casilla (0 a 7, representando las columnas a-h).
  * 
- * @param {number} fila - El número de la fila donde se ubica la casilla (1 a 8).
- * @param {number} col - El número de la columna donde se ubica la casilla (0 a 7).
- * @returns {HTMLElement} El elemento `div` que representa la casilla con su ID y color asignado.
+ * @returns {HTMLElement} La casilla creada, con su ID, color y pieza correspondiente (si hay una).
+ * 
+ * @example
+ * // Crear una casilla en la fila 1 y columna 0 (esquina inferior izquierda)
+ * const casillaA1 = crearCasilla(1, 0);
  */
 function crearCasilla(fila, col) {
     const casilla = document.createElement("div");
@@ -71,11 +73,68 @@ function crearCasilla(fila, col) {
         const piezaDiv = document.createElement("span");
         piezaDiv.classList.add("pieza");
         piezaDiv.innerText = pieza;
+
+        // Añadir aria-label para describir la pieza
+        switch (pieza) {
+            case "♖":
+                piezaDiv.setAttribute("aria-label", "Torre blanca");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♘":
+                piezaDiv.setAttribute("aria-label", "Caballo blanco");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♗":
+                piezaDiv.setAttribute("aria-label", "Alfil blanco");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♕":
+                piezaDiv.setAttribute("aria-label", "Reina blanca");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♔":
+                piezaDiv.setAttribute("aria-label", "Rey blanco");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♙":
+                piezaDiv.setAttribute("aria-label", "Peón blanco");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♜":
+                piezaDiv.setAttribute("aria-label", "Torre negra");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♞":
+                piezaDiv.setAttribute("aria-label", "Caballo negro");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♝":
+                piezaDiv.setAttribute("aria-label", "Alfil negro");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♛":
+                piezaDiv.setAttribute("aria-label", "Reina negra");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♚":
+                piezaDiv.setAttribute("aria-label", "Rey negro");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            case "♟":
+                piezaDiv.setAttribute("aria-label", "Peón negro");
+                piezaDiv.setAttribute("role", "img");
+                break;
+            default:
+                piezaDiv.setAttribute("aria-label", "Casilla vacía");
+        }
+
         casilla.appendChild(piezaDiv);
     }
 
     return casilla;
 }
+
+
 
 /**
  * Crea la numeración de las filas con letras (a-h).
