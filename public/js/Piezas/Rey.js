@@ -17,8 +17,8 @@ export class Rey extends Pieza {
             piezaDiv.innerText = this.obtenerSimboloPieza();
 
             // Asignar ID y atributos de accesibilidad
-            piezaDiv.setAttribute("id", this.posicion);  // Asignar id de la casilla
-            piezaDiv.setAttribute("role", "img");  // Especifica que es una imagen
+            piezaDiv.setAttribute("id", this.posicion); // Asignar id de la casilla
+            piezaDiv.setAttribute("role", "img"); // Especifica que es una imagen
             piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Rey blanco)
 
             // Añadir clases para el color de la pieza
@@ -35,10 +35,6 @@ export class Rey extends Pieza {
             return this.color === "blanca" ? "♔" : "♚"; // Rey blanco o negro
         }
         return "";
-    }
-
-    mover(nuevaPosicion) {
-        // TODO: Hacer que se mueva
     }
 
     calcularMovimientos() {

@@ -11,12 +11,42 @@ export class Pieza {
         this.tipo = tipo;
         this.posicion = posicion;
 
-        // Marcar la posición de la pieza en el tablero
-        tablero.ocuparCasilla(this.posicion, this);
     }
 
-    mover() {
-        throw new Error("Método 'mover' debe ser implementado por la subclase");
+    mover(nuevaPosicion) {
+        const movimientosValidos = this.calcularMovimientos();
+
+        // Si la nueva posición no está en los movimientos válidos, no hacer nada
+        if (!movimientosValidos.includes(nuevaPosicion)) {
+            return false;
+        }
+
+        // Obtener la casilla actual y la nueva casilla
+        const casillaActual = document.querySelector(`#${this.posicion.toUpperCase()}`);
+        const casillaNueva = document.querySelector(`#${nuevaPosicion.toUpperCase()}`);
+
+        if (!casillaNueva) {
+            return false;
+        }
+
+        // Eliminar la pieza de la casilla actual
+        if (casillaActual) {
+            const piezaElemento = casillaActual.querySelector(".pieza");
+
+            if (piezaElemento) {
+                piezaElemento.remove();
+            }
+        }
+
+        // Actualizar la posición en el objeto de la pieza
+        this.posicion = nuevaPosicion;
+
+        casillaNueva.childNodes[0].remove();
+
+        // Colocar la pieza en la nueva casilla visualmente
+        this.colocarEnTablero();
+
+        return true;
     }
 
     calcularMovimientos() {

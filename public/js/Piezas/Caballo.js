@@ -4,7 +4,7 @@ import { tablero } from "../Tablero.js";
 export class Caballo extends Pieza {
     constructor(color, posicion) {
         super(color, "Caballo", posicion);
-                
+
         // Colocamos la pieza en su casilla
         this.colocarEnTablero();
     }
@@ -16,10 +16,10 @@ export class Caballo extends Pieza {
             piezaDiv.classList.add("pieza");
             piezaDiv.classList.add("caballo");
             piezaDiv.innerText = this.obtenerSimboloPieza();
-            
+
             // Asignar ID y atributos de accesibilidad
-            piezaDiv.setAttribute("id", this.posicion);  // Asignar id de la casilla
-            piezaDiv.setAttribute("role", "img");  // Especifica que es una imagen
+            piezaDiv.setAttribute("id", this.posicion); // Asignar id de la casilla
+            piezaDiv.setAttribute("role", "img"); // Especifica que es una imagen
             piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Caballo blanco)
 
             // Añadir clases para el color de la pieza
@@ -36,10 +36,6 @@ export class Caballo extends Pieza {
             return this.color === "blanca" ? "♘" : "♞"; // Caballo blanco o negro
         }
         return "";
-    }
-
-    mover(nuevaPosicion) {
-        // TODO: Implementar el movimiento del caballo
     }
 
     calcularMovimientos() {
@@ -66,7 +62,7 @@ export class Caballo extends Pieza {
 
             // Verificar si la nueva posición está dentro de los límites del tablero (0-7)
             if (nuevaColumna >= 0 && nuevaColumna < 8 && nuevaFila >= 0 && nuevaFila < 8) {
-                const nuevaPosicion = arrayLetras[nuevaColumna] + (nuevaFila + 1); // Convertir la fila a 1-8
+                const nuevaPosicion = (arrayLetras[nuevaColumna] + (nuevaFila + 1)).toUpperCase(); // Convertir la fila a 1-8
 
                 console.log(`Comprobando: nuevaPosicion = ${nuevaPosicion}`);
 

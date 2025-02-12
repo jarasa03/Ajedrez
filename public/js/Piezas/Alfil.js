@@ -37,40 +37,6 @@ export class Alfil extends Pieza {
         return this.color === "blanca" ? "♗" : "♝"; // Alfil blanco o negro
     }
 
-    mover(nuevaPosicion) {
-        const movimientosValidos = this.calcularMovimientos();
-
-        // Si la nueva posición no está en los movimientos válidos, no hacer nada
-        if (!movimientosValidos.includes(nuevaPosicion)) {
-            return false;
-        }
-
-        // Obtener la casilla actual y la nueva casilla
-        const casillaActual = document.querySelector(`#${this.posicion.toUpperCase()}`);
-        const casillaNueva = document.querySelector(`#${nuevaPosicion.toUpperCase()}`);
-
-        if (!casillaNueva) {
-            return false;
-        }
-
-        // Eliminar la pieza de la casilla actual
-        if (casillaActual) {
-            const piezaElemento = casillaActual.querySelector(".pieza");
-
-            if (piezaElemento) {
-                piezaElemento.remove();
-            }
-        }
-
-        // Actualizar la posición en el objeto de la pieza
-        this.posicion = nuevaPosicion;
-
-        // Colocar la pieza en la nueva casilla visualmente
-        this.colocarEnTablero();
-
-        return true;
-    }
-
     calcularMovimientos() {
         const arrayLetras = ["a", "b", "c", "d", "e", "f", "g", "h"];
         const columna = arrayLetras.indexOf(this.posicion[0].toLowerCase()); // Asegurarse de que la columna esté en minúsculas

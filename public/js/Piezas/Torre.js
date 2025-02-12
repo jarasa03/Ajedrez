@@ -36,10 +36,6 @@ export class Torre extends Pieza {
         return "";
     }
 
-    mover(nuevaPosicion) {
-        // TODO: Implementar movimiento de la torre
-    }
-
     calcularMovimientos() {
         const arrayLetras = ["a", "b", "c", "d", "e", "f", "g", "h"];
         const columna = arrayLetras.indexOf(this.posicion[0].toLowerCase());

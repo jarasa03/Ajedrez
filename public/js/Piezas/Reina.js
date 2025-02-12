@@ -17,8 +17,8 @@ export class Reina extends Pieza {
             piezaDiv.innerText = this.obtenerSimboloPieza();
 
             // Asignar ID y atributos de accesibilidad
-            piezaDiv.setAttribute("id", this.posicion);  // Asignar id de la casilla
-            piezaDiv.setAttribute("role", "img");  // Especifica que es una imagen
+            piezaDiv.setAttribute("id", this.posicion); // Asignar id de la casilla
+            piezaDiv.setAttribute("role", "img"); // Especifica que es una imagen
             piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Reina blanca)
 
             // Añadir clases para el color de la pieza
@@ -37,10 +37,6 @@ export class Reina extends Pieza {
         return "";
     }
 
-    mover(nuevaPosicion) {
-        // TODO: Hacer que se mueva
-    }
-
     calcularMovimientos() {
         const arrayLetras = ["a", "b", "c", "d", "e", "f", "g", "h"];
         const columna = arrayLetras.indexOf(this.posicion[0].toLowerCase()); // Asegurarse de que la columna esté en minúsculas
@@ -56,11 +52,11 @@ export class Reina extends Pieza {
 
         // Direcciones horizontales, verticales y diagonales para la Reina
         const direcciones = [
-            { x: 1, y: 0 },  // Derecha
+            { x: 1, y: 0 }, // Derecha
             { x: -1, y: 0 }, // Izquierda
-            { x: 0, y: 1 },  // Arriba
+            { x: 0, y: 1 }, // Arriba
             { x: 0, y: -1 }, // Abajo
-            { x: 1, y: 1 },  // Diagonal derecha arriba
+            { x: 1, y: 1 }, // Diagonal derecha arriba
             { x: -1, y: 1 }, // Diagonal izquierda arriba
             { x: 1, y: -1 }, // Diagonal derecha abajo
             { x: -1, y: -1 } // Diagonal izquierda abajo

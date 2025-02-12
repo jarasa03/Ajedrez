@@ -113,3 +113,11 @@ function crearTablero() {
 crearTablero();
 crearNumeracionFila();
 crearNumeracionColumnas();
+
+// Crear un nuevo alfil blanco en una posición libre (D4)
+const nuevoAlfil = new Alfil("blanca", "D3");
+
+// Probar movimiento del nuevo alfil después de 1 segundo
+setTimeout(() => {
+    nuevoAlfil.mover("H7");
+}, 1000);
