@@ -58,28 +58,6 @@ function crearCasilla(fila, col) {
 
     casilla.classList.add((fila + col) % 2 === 0 ? "casilla-blanca" : "casilla-negra");
 
-    // Asignamos la pieza si existe
-    const pieza = piezasIniciales[casilla.id];
-    if (pieza) {
-        const piezaDiv = document.createElement("span");
-        piezaDiv.classList.add("pieza");
-
-        // Asignamos un símbolo visual según el tipo de pieza
-        piezaDiv.innerText = pieza.constructor.name === "Peon" ?
-            pieza.color === "blanca" ? "♙" : "♟" :
-            pieza.constructor.name === "Torre" ?
-            pieza.color === "blanca" ? "♖" : "♜" :
-            pieza.constructor.name === "Caballo" ?
-            pieza.color === "blanca" ? "♘" : "♞" :
-            pieza.constructor.name === "Alfil" ?
-            pieza.color === "blanca" ? "♗" : "♝" :
-            pieza.constructor.name === "Reina" ?
-            pieza.color === "blanca" ? "♕" : "♛" :
-            pieza.color === "blanca" ? "♔" : "♚";
-
-        casilla.appendChild(piezaDiv);
-    }
-
     return casilla;
 }
 
@@ -111,7 +89,7 @@ function crearNumeracionColumnas() {
 
 function colocarPiezasEnTablero() {
     Object.values(piezasIniciales).forEach(pieza => {
-        pieza.colocarEnTablero();  // Llama a colocarEnTablero para cada pieza
+        pieza.colocarEnTablero(); // Llama a colocarEnTablero para cada pieza
     });
 }
 
@@ -135,4 +113,3 @@ function crearTablero() {
 crearTablero();
 crearNumeracionFila();
 crearNumeracionColumnas();
-

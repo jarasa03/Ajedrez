@@ -17,11 +17,11 @@ export class Torre extends Pieza {
             piezaDiv.classList.add("pieza");
             piezaDiv.classList.add("torre");
             piezaDiv.innerText = this.obtenerSimboloPieza(); // Aseguramos que el símbolo sea correcto
-            
-            piezaDiv.setAttribute("id", this.posicion);  // Asignar id de la casilla
-            piezaDiv.setAttribute("role", "img");  // Especifica que es una imagen
+
+            piezaDiv.setAttribute("id", this.posicion); // Asignar id de la casilla
+            piezaDiv.setAttribute("role", "img"); // Especifica que es una imagen
             piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Torre blanca)
-            
+
             piezaDiv.classList.add(this.color === "blanca" ? "pieza-blanca" : "pieza-negra");
 
             casilla.appendChild(piezaDiv); // Colocamos la pieza en la casilla
@@ -46,10 +46,7 @@ export class Torre extends Pieza {
         const fila = parseInt(this.posicion[1]) - 1; // Convertir la fila para que empiece desde 0
         const movimientosPosibles = [];
 
-        // Verificar que la columna esté bien calculada
-        console.log(`Posición inicial: Columna = ${columna} (Letra ${this.posicion[0]}), Fila = ${fila + 1}`);
         if (columna === -1) {
-            console.log("Error: Columna inválida.");
             return movimientosPosibles;
         }
 
