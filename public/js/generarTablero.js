@@ -115,10 +115,10 @@ crearNumeracionFila();
 crearNumeracionColumnas();
 
 // Crear un nuevo alfil blanco en una posición libre (D4)
-const nuevaTorre = new Peon("blanca", "D3");
+const nuevoPeon = new Peon("blanca", "D3");
 
 // Probar movimiento del nuevo alfil después de 1 segundo
 setTimeout(() => {
-    nuevaTorre.mover("A3");
-    console.log(nuevaTorre.calcularMovimientos());
+    nuevoPeon.mover("A3");
+    console.log(nuevoPeon.calcularMovimientos());
 }, 1000);
