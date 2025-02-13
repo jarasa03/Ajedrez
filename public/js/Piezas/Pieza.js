@@ -44,7 +44,7 @@ export class Pieza {
         // Colocar la pieza en la nueva casilla visualmente
         this.colocarEnTablero();
 
-        // Si es el primer movimiento, actualizar el flag
+        // Si es el primer movimiento del peón, actualizar el flag
         if (this.primerMovimiento) {
             this.primerMovimiento = false;
         }
