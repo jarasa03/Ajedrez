@@ -9,25 +9,6 @@ export class Torre extends Pieza {
         this.colocarEnTablero();
     }
 
-    colocarEnTablero() {
-        // Asegurarse de que el id coincida con la posición de la pieza
-        const casilla = document.querySelector(`#${this.posicion.toUpperCase()}`);
-        if (casilla) {
-            const piezaDiv = document.createElement("span");
-            piezaDiv.classList.add("pieza");
-            piezaDiv.classList.add("torre");
-            piezaDiv.innerText = this.obtenerSimboloPieza(); // Aseguramos que el símbolo sea correcto
-
-            piezaDiv.setAttribute("id", this.posicion); // Asignar id de la casilla
-            piezaDiv.setAttribute("role", "img"); // Especifica que es una imagen
-            piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Torre blanca)
-
-            piezaDiv.classList.add(this.color === "blanca" ? "pieza-blanca" : "pieza-negra");
-
-            casilla.appendChild(piezaDiv); // Colocamos la pieza en la casilla
-        }
-    }
-
     obtenerSimboloPieza() {
         // Retorna el símbolo según el color de la pieza
         if (this.constructor.name === "Torre") {
@@ -69,7 +50,7 @@ export class Torre extends Pieza {
                     break; // Si se sale del tablero, detenerse
                 }
 
-                const nuevaPosicion = arrayLetras[nuevaColumna] + (nuevaFila + 1);
+                const nuevaPosicion = (arrayLetras[nuevaColumna] + (nuevaFila + 1)).toUpperCase();
                 const piezaEnDestino = tablero.obtenerPieza(nuevaPosicion);
 
                 // Si la casilla está vacía, la Torre puede moverse allí

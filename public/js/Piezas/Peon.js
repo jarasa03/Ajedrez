@@ -9,33 +9,8 @@ export class Peon extends Pieza {
         this.colocarEnTablero();
     }
 
-    colocarEnTablero() {
-        const casilla = document.querySelector(`#${this.posicion.toUpperCase()}`);
-        if (casilla) {
-            const piezaDiv = document.createElement("span");
-            piezaDiv.classList.add("pieza");
-            piezaDiv.classList.add("peon");
-            piezaDiv.innerText = this.obtenerSimboloPieza();
-
-            // Asignar ID y atributos de accesibilidad
-            piezaDiv.setAttribute("id", this.posicion); // Asignar id de la casilla
-            piezaDiv.setAttribute("role", "img"); // Especifica que es una imagen
-            piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Peón blanco)
-
-            // Añadir clases para el color de la pieza
-            piezaDiv.classList.add(this.color === "blanca" ? "pieza-blanca" : "pieza-negra");
-
-            // Colocar la pieza en la casilla correspondiente
-            casilla.appendChild(piezaDiv);
-        }
-    }
-
     obtenerSimboloPieza() {
-        // Devolver el símbolo correspondiente del peón
-        if (this.constructor.name === "Peon") {
-            return this.color === "blanca" ? "♙" : "♟"; // Peón blanco o negro
-        }
-        return "";
+        return this.color === "blanca" ? "♙" : "♟"; // Peón blanco o negro
     }
 
     calcularMovimientos() {
@@ -57,7 +32,7 @@ export class Peon extends Pieza {
         // Movimiento hacia adelante (una casilla)
         const nuevaFilaAdelante = fila + direccion;
         if (nuevaFilaAdelante >= 0 && nuevaFilaAdelante < 8) {
-            const nuevaPosicionAdelante = arrayLetras[columna] + (nuevaFilaAdelante + 1);
+            const nuevaPosicionAdelante = (arrayLetras[columna] + (nuevaFilaAdelante + 1)).toUpperCase();
             const piezaEnDestinoAdelante = tablero.obtenerPieza(nuevaPosicionAdelante);
 
             // Si la casilla está vacía, el peón puede moverse allí
@@ -70,7 +45,7 @@ export class Peon extends Pieza {
         if (this.primerMovimiento) {
             const nuevaFilaDobleAdelante = fila + 2 * direccion;
             if (nuevaFilaDobleAdelante >= 0 && nuevaFilaDobleAdelante < 8) {
-                const nuevaPosicionDobleAdelante = arrayLetras[columna] + (nuevaFilaDobleAdelante + 1);
+                const nuevaPosicionDobleAdelante = (arrayLetras[columna] + (nuevaFilaDobleAdelante + 1)).toUpperCase();
                 const piezaEnDestinoDobleAdelante = tablero.obtenerPieza(nuevaPosicionDobleAdelante);
 
                 // Si la casilla está vacía, el peón puede moverse allí
@@ -92,7 +67,7 @@ export class Peon extends Pieza {
 
             // Verificar que la nueva casilla esté dentro del tablero
             if (nuevaColumna >= 0 && nuevaColumna < 8 && nuevaFila >= 0 && nuevaFila < 8) {
-                const nuevaPosicionComer = arrayLetras[nuevaColumna] + (nuevaFila + 1);
+                const nuevaPosicionComer = (arrayLetras[nuevaColumna] + (nuevaFila + 1)).toUpperCase();
                 const piezaEnDestinoComer = tablero.obtenerPieza(nuevaPosicionComer);
 
                 // Si la casilla tiene una pieza enemiga, el peón puede comerla
@@ -100,11 +75,6 @@ export class Peon extends Pieza {
                     movimientosPosibles.push(nuevaPosicionComer);
                 }
             }
-        }
-
-        // Después de mover una vez, el peón no es más un primer movimiento
-        if (this.primerMovimiento) {
-            this.primerMovimiento = false;
         }
 
         return movimientosPosibles;

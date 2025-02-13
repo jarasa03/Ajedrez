@@ -1,5 +1,3 @@
-import { tablero } from "../Tablero.js";
-
 export class Pieza {
     constructor(color, tipo, posicion) {
 
@@ -46,6 +44,11 @@ export class Pieza {
         // Colocar la pieza en la nueva casilla visualmente
         this.colocarEnTablero();
 
+        // Si es el primer movimiento, actualizar el flag
+        if (this.primerMovimiento) {
+            this.primerMovimiento = false;
+        }
+
         return true;
     }
 
@@ -54,6 +57,19 @@ export class Pieza {
     }
 
     colocarEnTablero() {
-        throw new Error("Método 'colocarEnTablero' debe ser implementado por la subclase");
+
+        const casilla = document.querySelector(`#${this.posicion.toUpperCase()}`);
+        if (casilla) {
+            const piezaDiv = document.createElement("span");
+            piezaDiv.classList.add("pieza", this.tipo.toLowerCase(), this.color === "blanca" ? "pieza-blanca" : "pieza-negra");
+            piezaDiv.innerText = this.obtenerSimboloPieza();
+
+            piezaDiv.setAttribute("id", this.posicion); // ID de la casilla
+            piezaDiv.setAttribute("role", "img");
+            piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`);
+
+            casilla.appendChild(piezaDiv);
+        }
+
     }
 }

@@ -8,33 +8,8 @@ export class Rey extends Pieza {
         this.colocarEnTablero();
     }
 
-    colocarEnTablero() {
-        const casilla = document.querySelector(`#${this.posicion.toUpperCase()}`);
-        if (casilla) {
-            const piezaDiv = document.createElement("span");
-            piezaDiv.classList.add("pieza");
-            piezaDiv.classList.add("rey");
-            piezaDiv.innerText = this.obtenerSimboloPieza();
-
-            // Asignar ID y atributos de accesibilidad
-            piezaDiv.setAttribute("id", this.posicion); // Asignar id de la casilla
-            piezaDiv.setAttribute("role", "img"); // Especifica que es una imagen
-            piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`); // Descripción de la pieza (ej. Rey blanco)
-
-            // Añadir clases para el color de la pieza
-            piezaDiv.classList.add(this.color === "blanca" ? "pieza-blanca" : "pieza-negra");
-
-            // Colocar la pieza en la casilla correspondiente
-            casilla.appendChild(piezaDiv);
-        }
-    }
-
     obtenerSimboloPieza() {
-        // Devolver el símbolo correspondiente del rey
-        if (this.constructor.name === "Rey") {
-            return this.color === "blanca" ? "♔" : "♚"; // Rey blanco o negro
-        }
-        return "";
+        return this.color === "blanca" ? "♔" : "♚"; // Rey blanco o negro
     }
 
     calcularMovimientos() {
@@ -69,7 +44,7 @@ export class Rey extends Pieza {
 
             // Verificar que la nueva casilla esté dentro del tablero
             if (nuevaColumna >= 0 && nuevaColumna < 8 && nuevaFila >= 0 && nuevaFila < 8) {
-                const nuevaPosicion = arrayLetras[nuevaColumna] + (nuevaFila + 1);
+                const nuevaPosicion = (arrayLetras[nuevaColumna] + (nuevaFila + 1)).toUpperCase();
                 const piezaEnDestino = tablero.obtenerPieza(nuevaPosicion);
 
                 // Si la casilla está vacía o tiene una pieza enemiga, el Rey puede moverse allí
