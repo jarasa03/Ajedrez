@@ -47,10 +47,13 @@ export class Alfil extends Pieza {
                 const nuevaPosicion = (arrayLetras[nuevaColumna] + (nuevaFila + 1)).toUpperCase();
                 const piezaEnDestino = tablero.obtenerPieza(nuevaPosicion);
 
+                console.log(`Posición evaluada: ${nuevaPosicion}, Pieza encontrada:`, piezaEnDestino);
+
                 // Si la casilla está vacía, el alfil puede moverse allí
                 if (!piezaEnDestino) {
                     movimientosPosibles.push(nuevaPosicion);
                 }
+
                 // Si tiene una pieza enemiga, el alfil puede capturarla y moverse allí
                 else if (piezaEnDestino.color !== this.color) {
                     movimientosPosibles.push(nuevaPosicion);
