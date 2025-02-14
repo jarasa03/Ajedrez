@@ -1,7 +1,7 @@
 :root {
     /* Tamaños generales */
     --tamanyo-marco: min(80vw, 80vh);
-    --tamanyo-tablero: calc(var(--tamanyo-marco) - 3vw);
+    --tamanyo-tablero: min(76vw, 76vh);
     --tamanyo-casilla: calc(var(--tamanyo-tablero) / 8);
     /* Tamaños de fuentes */
     --tamanyo-fuente-pieza: calc(var(--tamanyo-casilla) * 0.8);
@@ -57,7 +57,15 @@ body {
 
 .pieza:hover {
     opacity: 0.4;
-    cursor: pointer;
+    cursor: grab;
+}
+
+.pieza:active {
+    cursor: grabbing;
+}
+
+.tablero:active {
+    cursor: grabbing;
 }
 
 .numeracion {
