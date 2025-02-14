@@ -1,5 +1,7 @@
 import { tablero } from "../Tablero.js";
 
+let turno = "blanca";
+
 export class Pieza {
     constructor(color, tipo, posicion) {
 
@@ -14,52 +16,61 @@ export class Pieza {
     }
 
     mover(nuevaPosicion) {
-        const movimientosValidos = this.calcularMovimientos();
+        if (this.color === turno) {
+            const movimientosValidos = this.calcularMovimientos();
 
-        if (!movimientosValidos.includes(nuevaPosicion)) {
-            return false;
-        }
-
-        // Obtener la casilla actual y la nueva casilla
-        const casillaActual = document.querySelector(`#${this.posicion.toUpperCase()}`);
-        const casillaNueva = document.querySelector(`#${nuevaPosicion.toUpperCase()}`);
-
-        if (!casillaNueva) {
-            return false;
-        }
-
-        // Verificar si hay una pieza enemiga en la nueva casilla
-        const piezaEnNuevaCasilla = tablero.obtenerPieza(nuevaPosicion);
-        if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
-            // Eliminar visualmente la pieza enemiga
-            const piezaElemento = casillaNueva.querySelector(".pieza");
-            if (piezaElemento) {
-                piezaElemento.remove();
+            if (!movimientosValidos.includes(nuevaPosicion)) {
+                return false;
             }
-            // Eliminar la pieza enemiga del tablero lógico
-            tablero.eliminarPieza(nuevaPosicion);
+
+            // Obtener la casilla actual y la nueva casilla
+            const casillaActual = document.querySelector(`#${this.posicion.toUpperCase()}`);
+            const casillaNueva = document.querySelector(`#${nuevaPosicion.toUpperCase()}`);
+
+            if (!casillaNueva) {
+                return false;
+            }
+
+            // Verificar si hay una pieza enemiga en la nueva casilla
+            const piezaEnNuevaCasilla = tablero.obtenerPieza(nuevaPosicion);
+            if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
+                // Eliminar visualmente la pieza enemiga
+                const piezaElemento = casillaNueva.querySelector(".pieza");
+                if (piezaElemento) {
+                    piezaElemento.remove();
+                }
+                // Eliminar la pieza enemiga del tablero lógico
+                tablero.eliminarPieza(nuevaPosicion);
+            }
+
+            // Eliminar la pieza visualmente de la casilla actual
+            const piezaElementoActual = casillaActual.querySelector(".pieza");
+            if (piezaElementoActual) {
+                piezaElementoActual.remove();
+            }
+
+            // Actualizar la lógica del tablero
+            tablero.eliminarPieza(this.posicion); // Borrar la referencia de la posición anterior
+            this.posicion = nuevaPosicion; // Actualizar la posición
+            tablero.colocarPieza(this); // Registrar la nueva posición en el tablero
+
+            // Colocar la pieza visualmente en la nueva casilla
+            this.colocarEnTablero();
+
+            // Si es el primer movimiento del peón, actualizar el flag
+            if (this.primerMovimiento) {
+                this.primerMovimiento = false;
+            }
+
+            if (turno === "blanca") {
+                turno = "negra";
+            } else {
+                turno = "blanca"
+            }
+
+            return true;
         }
 
-        // Eliminar la pieza visualmente de la casilla actual
-        const piezaElementoActual = casillaActual.querySelector(".pieza");
-        if (piezaElementoActual) {
-            piezaElementoActual.remove();
-        }
-
-        // Actualizar la lógica del tablero
-        tablero.eliminarPieza(this.posicion); // Borrar la referencia de la posición anterior
-        this.posicion = nuevaPosicion; // Actualizar la posición
-        tablero.colocarPieza(this); // Registrar la nueva posición en el tablero
-
-        // Colocar la pieza visualmente en la nueva casilla
-        this.colocarEnTablero();
-
-        // Si es el primer movimiento del peón, actualizar el flag
-        if (this.primerMovimiento) {
-            this.primerMovimiento = false;
-        }
-
-        return true;
     }
 
     calcularMovimientos() {
@@ -78,6 +89,50 @@ export class Pieza {
             piezaDiv.setAttribute("id", this.posicion); // ID de la casilla
             piezaDiv.setAttribute("role", "img");
             piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`);
+
+
+
+
+
+
+            // Escuchar evento click en las casillas del tablero
+            const casillas = document.querySelectorAll(".casilla");
+
+            let piezaClicada = null; // Variable global para almacenar la pieza seleccionada
+
+            // Esta función maneja el clic en las casillas
+            function manejarClicCasillas(event) {
+                const casillaClicada = event.target;
+                if (piezaClicada) {
+                    console.log(tablero.obtenerPieza(piezaClicada.id).posicion.toUpperCase())
+                    tablero.obtenerPieza(piezaClicada.id).mover(casillaClicada.id.toUpperCase())
+                    console.log(casillaClicada.id.toUpperCase())
+                    piezaClicada = null; // Limpiar la selección de la pieza después de moverla
+                }
+            }
+
+
+            piezaDiv.addEventListener("mousedown", (event) => {
+                piezaClicada = event.target; // Guardar la pieza seleccionada
+            });
+
+
+            casillas.forEach(casilla => {
+                casilla.addEventListener("mouseup", manejarClicCasillas);
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             tablero.colocarPieza(this);
             casilla.appendChild(piezaDiv);
