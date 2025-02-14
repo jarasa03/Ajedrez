@@ -1,0 +1,31 @@
+@import url("./styles.css");
+p {
+    font-family: "rocktown";
+    font-size: 5vw;
+    color: white;
+    letter-spacing: 0.4vw;
+    grid-row: 1 / 2;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    display: flex;
+    grid-row: 2 / 3;
+    place-self: center;
+    font-size: 3vw;
+    font-family: "rocktown";
+    color: var(--color-marco);
+    -webkit-text-stroke: black 0.08vw;
+    text-decoration: none;
+    letter-spacing: 0.3vw;
+}
+
+#contenedorGanador {
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+}

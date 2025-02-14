@@ -83,9 +83,9 @@ export class Pieza {
             let reyes = document.querySelectorAll(".rey");
             if (reyes.length === 1) {
                 if (reyes[0].classList.contains("pieza-blanca")) {
-                    alert("Ganan las blancas")
+                    window.location.href = "../ganadores/gananBlancas.html";
                 } else if (reyes[0].classList.contains("pieza-negra")) {
-                    alert("Ganan las negras")
+                    window.location.href = "../ganadores/gananNegras.html";
                 }
             }
 
@@ -185,6 +185,7 @@ function iniciarCronometroBlanco() {
             actualizarCronometroBlanco();
         } else {
             clearInterval(intervaloBlancas); // Detener cuando llega a 0
+            window.location.href = "../ganadores/gananNegras.html";
             cronometroActivoBlancas = false;
         }
     }, 1000);
@@ -199,6 +200,7 @@ function iniciarCronometroNegro() {
             actualizarCronometroNegro();
         } else {
             clearInterval(intervaloNegras); // Detener cuando llega a 0
+            window.location.href = "../ganadores/gananBlancas.html";
             cronometroActivoNegras = false;
         }
     }, 1000);
@@ -214,12 +216,4 @@ function detenerCronometroBlancas() {
 function detenerCronometroNegras() {
     clearInterval(intervaloNegras);
     cronometroActivoNegras = false;
-}
-
-function continuarCronometroBlancas() {
-    iniciarCronometroBlanco();
-}
-
-function continuarCronometroNegras() {
-    iniciarCronometroNegro();
 }

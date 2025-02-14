@@ -90,10 +90,7 @@ p {
     cursor: grab;
 }
 
-.pieza:active {
-    cursor: grabbing;
-}
-
+.pieza:active,
 .tablero:active {
     cursor: grabbing;
 }
