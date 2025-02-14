@@ -21,6 +21,7 @@
     --color-fondo: #efbcee;
     --color-piezas: black;
     --color-piezas-hover: rgba(0, 0, 0, 0.4);
+    --color-casilla-seleccionable: #d22e80;
 }
 
 @font-face {
@@ -120,6 +121,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .casilla-blanca {
@@ -128,6 +130,10 @@ body {
 
 .casilla-negra {
     background-color: var(--color-casilla-negra);
+}
+
+.casilla-seleccionable {
+    background-color: var(--color-casilla-seleccionable);
 }
 
 #fila-A {
