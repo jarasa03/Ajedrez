@@ -28,12 +28,22 @@ export class Pieza {
             return false;
         }
 
-        // Eliminar la pieza visualmente de la casilla actual
-        if (casillaActual) {
-            const piezaElemento = casillaActual.querySelector(".pieza");
+        // Verificar si hay una pieza enemiga en la nueva casilla
+        const piezaEnNuevaCasilla = tablero.obtenerPieza(nuevaPosicion);
+        if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
+            // Eliminar visualmente la pieza enemiga
+            const piezaElemento = casillaNueva.querySelector(".pieza");
             if (piezaElemento) {
                 piezaElemento.remove();
             }
+            // Eliminar la pieza enemiga del tablero lógico
+            tablero.eliminarPieza(nuevaPosicion);
+        }
+
+        // Eliminar la pieza visualmente de la casilla actual
+        const piezaElementoActual = casillaActual.querySelector(".pieza");
+        if (piezaElementoActual) {
+            piezaElementoActual.remove();
         }
 
         // Actualizar la lógica del tablero
