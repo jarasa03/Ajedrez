@@ -4,6 +4,7 @@ import { Alfil } from "./Piezas/Alfil.js";
 import { Reina } from "./Piezas/Reina.js";
 import { Rey } from "./Piezas/Rey.js";
 import { Peon } from "./Piezas/Peon.js";
+import { tablero } from "./Tablero.js";
 
 const columnas = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
@@ -115,10 +116,9 @@ crearNumeracionFila();
 crearNumeracionColumnas();
 
 // Crear un nuevo alfil blanco en una posición libre (D4)
-const nuevoPeon = new Alfil("blanca", "D3");
-console.log(nuevoPeon.calcularMovimientos());
+const nuevoAlfil = new Alfil("blanca", "D3");
+
 // Probar movimiento del nuevo alfil después de 1 segundo
 setTimeout(() => {
-    nuevoPeon.mover("C2");
-    console.log(nuevoPeon.calcularMovimientos());
+    nuevoAlfil.mover("C2");
 }, 1000);
