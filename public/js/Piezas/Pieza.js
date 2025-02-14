@@ -1,6 +1,14 @@
 import { tablero } from "../Tablero.js";
 
 let turno = "blanca";
+let tiempoBlancas = 15 * 60;
+let tiempoNegras = 15 * 60;
+let intervaloBlancas;
+let intervaloNegras;
+let cronometroActivoBlancas = false;
+let cronometroActivoNegras = false;
+const cronoBlancas = document.getElementById("crono-blancas");
+const cronoNegras = document.getElementById("crono-negras");
 
 export class Pieza {
     constructor(color, tipo, posicion) {
@@ -63,8 +71,12 @@ export class Pieza {
             }
 
             if (turno === "blanca") {
+                iniciarCronometroNegro();
+                detenerCronometroBlancas();
                 turno = "negra";
             } else {
+                iniciarCronometroBlanco();
+                detenerCronometroNegras();
                 turno = "blanca"
             }
 
@@ -76,6 +88,9 @@ export class Pieza {
                     alert("Ganan las negras")
                 }
             }
+
+
+
             return true;
         }
 
@@ -98,21 +113,7 @@ export class Pieza {
             piezaDiv.setAttribute("role", "img");
             piezaDiv.setAttribute("aria-label", `${this.constructor.name} ${this.color}`);
 
-            // Escuchar evento click en las casillas del tablero
-            const casillas = document.querySelectorAll(".casilla");
-
             let piezaClicada = null; // Variable global para almacenar la pieza seleccionada
-
-            // // Esta función maneja el clic en las casillas
-            // function manejarClicCasillas(event) {
-            //     const casillaClicada = event.target;
-            //     if (piezaClicada) {
-            //         console.log(tablero.obtenerPieza(piezaClicada.id).posicion.toUpperCase())
-            //         tablero.obtenerPieza(piezaClicada.id).mover(casillaClicada.id.toUpperCase())
-            //         console.log(casillaClicada.id.toUpperCase())
-            //         piezaClicada = null; // Limpiar la selección de la pieza después de moverla
-            //     }
-            // }
 
             let casillasPosibles = []; // Para almacenar las casillas posibles de movimiento
             let coloresOriginales = {}; // Para almacenar los colores originales de las casillas
@@ -140,7 +141,6 @@ export class Pieza {
                         casilla.style.backgroundColor = coloresOriginales[id] || ""; // Restaurar color original
                     }
                 });
-
                 // Proceder con el movimiento de la pieza (como en tu lógica original)
                 if (piezaClicada) {
                     const casillaClicada = event.target;
@@ -162,4 +162,64 @@ export class Pieza {
 
     }
 
+}
+
+function actualizarCronometroBlanco() {
+    const minutos = Math.floor(tiempoBlancas / 60);
+    const segundos = tiempoBlancas % 60;
+
+    cronoBlancas.textContent = `${minutos}:${segundos}`;
+}
+
+function actualizarCronometroNegro() {
+    const minutos = Math.floor(tiempoNegras / 60);
+    const segundos = tiempoNegras % 60;
+
+    cronoNegras.textContent = `${minutos}:${segundos}`;
+}
+
+function iniciarCronometroBlanco() {
+    intervaloBlancas = setInterval(() => {
+        if (tiempoBlancas > 0) {
+            tiempoBlancas--;
+            actualizarCronometroBlanco();
+        } else {
+            clearInterval(intervaloBlancas); // Detener cuando llega a 0
+            cronometroActivoBlancas = false;
+        }
+    }, 1000);
+
+    cronometroActivoBlancas = true;
+}
+
+function iniciarCronometroNegro() {
+    intervaloNegras = setInterval(() => {
+        if (tiempoNegras > 0) {
+            tiempoNegras--;
+            actualizarCronometroNegro();
+        } else {
+            clearInterval(intervaloNegras); // Detener cuando llega a 0
+            cronometroActivoNegras = false;
+        }
+    }, 1000);
+
+    cronometroActivoNegras = true;
+}
+
+function detenerCronometroBlancas() {
+    clearInterval(intervaloBlancas);
+    cronometroActivoBlancas = false;
+}
+
+function detenerCronometroNegras() {
+    clearInterval(intervaloNegras);
+    cronometroActivoNegras = false;
+}
+
+function continuarCronometroBlancas() {
+    iniciarCronometroBlanco();
+}
+
+function continuarCronometroNegras() {
+    iniciarCronometroNegro();
 }
