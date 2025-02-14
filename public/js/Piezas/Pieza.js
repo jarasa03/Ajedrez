@@ -68,6 +68,14 @@ export class Pieza {
                 turno = "blanca"
             }
 
+            let reyes = document.querySelectorAll(".rey");
+            if (reyes.length === 1) {
+                if (reyes[0].classList.contains("pieza-blanca")) {
+                    alert("Ganan las blancas")
+                } else if (reyes[0].classList.contains("pieza-negra")) {
+                    alert("Ganan las negras")
+                }
+            }
             return true;
         }
 
