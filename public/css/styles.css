@@ -1,7 +1,7 @@
 :root {
     /* Tamaños generales */
-    --tamanyo-marco: min(80vw, 80vh);
-    --tamanyo-tablero: min(76vw, 76vh);
+    --tamanyo-marco: min(75vw, 80vh);
+    --tamanyo-tablero: min(71vw, 76vh);
     --tamanyo-casilla: calc(var(--tamanyo-tablero) / 8);
     /* Tamaños de fuentes */
     --tamanyo-fuente-pieza: calc(var(--tamanyo-casilla) * 0.8);
@@ -41,6 +41,36 @@ body {
     height: 100vh;
     margin: 0;
     background-color: var(--color-fondo);
+}
+
+#contenedor {
+    display: grid;
+    grid-template-columns: 22% 1fr 22%;
+    height: 100vh;
+    width: 100vw;
+}
+
+.lados {
+    display: grid;
+    grid-template-rows: 30% 1fr;
+    width: 100%;
+    height: 100%;
+}
+
+.contadores {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "rocktown";
+    font-size: calc(var(--tamanyo-casilla) * 0.65);
+}
+
+#contador-blancas {
+    color: white;
+}
+
+p {
+    -webkit-text-stroke: #d22e80 calc(var(--tamanyo-fuente-numeracion) / 14);
 }
 
 .pieza {
@@ -90,7 +120,14 @@ body {
     justify-content: center;
 }
 
+#contiene-tabla {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #numeracion-casillas {
+    grid-column: 2 / 3;
     display: grid;
     grid-template-columns: var(--espaciado-numeracion-pequeno) var(--espaciado-numeracion) repeat(8, var(--tamanyo-casilla)) var(--espaciado-numeracion);
     grid-template-rows: var(--espaciado-numeracion-pequeno) var(--espaciado-numeracion) repeat(8, var(--tamanyo-casilla)) var(--espaciado-numeracion);
