@@ -166,14 +166,13 @@ export class Pieza {
 
 function actualizarCronometroBlanco() {
     const minutos = Math.floor(tiempoBlancas / 60);
-    const segundos = tiempoBlancas % 60;
-
+    const segundos = (tiempoBlancas % 60).toString().padStart(2, '0');
     cronoBlancas.textContent = `${minutos}:${segundos}`;
 }
 
 function actualizarCronometroNegro() {
     const minutos = Math.floor(tiempoNegras / 60);
-    const segundos = tiempoNegras % 60;
+    const segundos = (tiempoNegras % 60).toString().padStart(2, '0');
 
     cronoNegras.textContent = `${minutos}:${segundos}`;
 }
