@@ -102,12 +102,7 @@ export class Pieza {
             const filaPromocion = this.color === "blanca" ? 8 : 1;
             const filaPeon = parseInt(this.posicion[1]);
     
-            console.log(`Posición actual: ${this.posicion}`);
-            console.log(`Fila de promoción: ${filaPromocion}`);
-            console.log(`Fila del peón: ${filaPeon}`);
-    
             if (filaPeon === filaPromocion && this.constructor.name === "Peon") {
-                console.log('¡El peón ha llegado a la fila de promoción!');
     
                 // Eliminar el peón antes de la promoción
                 tablero.eliminarPieza(this.posicion);
@@ -127,8 +122,6 @@ export class Pieza {
                 }
     
                 return true;
-            } else {
-                console.log('No se ha cumplido la condición de promoción.');
             }
     
             // Cambiar el turno
