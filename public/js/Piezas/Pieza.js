@@ -136,9 +136,11 @@ export class Pieza {
 
             document.addEventListener("mouseup", (event) => {
                 // Restaurar los colores de las casillas de movimiento (el resaltado temporal)
+                console.log("Restaurando colores de las casillas posibles...");
                 casillasPosibles.forEach(id => {
                     let casilla = document.getElementById(id);
                     if (casilla) {
+                        console.log(`Restaurando color de la casilla: ${id}`);
                         casilla.style.backgroundColor = coloresOriginales[id] || "";
                     }
                 });
@@ -146,13 +148,17 @@ export class Pieza {
                 // Proceder con el movimiento de la pieza si se suelta sobre una casilla válida
                 if (piezaClicada) {
                     const casillaClicada = event.target;
+                    console.log(`Casilla clicada: ${casillaClicada.id}`);
 
                     // Verificar que la casilla destino sea una de las válidas
-                    if (casillaClicada && casillasPosibles.includes(casillaClicada.id)) {
+                    if (casillaClicada && casillasPosibles.includes(casillaClicada.id.toUpperCase())) {
+                        console.log("Movimiento válido, procesando...");
+
                         // Restaurar el color de la casilla del último movimiento si es diferente
                         if (ultimaCasillaMovida && ultimaCasillaMovida !== casillaClicada.id) {
                             let casillaAnterior = document.getElementById(ultimaCasillaMovida);
                             if (casillaAnterior) {
+                                console.log(`Restaurando color de la última casilla: ${ultimaCasillaMovida}`);
                                 if (casillaAnterior.classList.contains('casilla-blanca')) {
                                     casillaAnterior.style.backgroundColor = "var(--color-casilla-blanca)";
                                 } else if (casillaAnterior.classList.contains('casilla-negra')) {
@@ -161,16 +167,30 @@ export class Pieza {
                             }
                         }
 
-                        console.log(tablero.obtenerPieza(piezaClicada.id).posicion.toUpperCase());
-                        tablero.obtenerPieza(piezaClicada.id).mover(casillaClicada.id.toUpperCase());
-                        console.log(casillaClicada.id.toUpperCase());
+                        console.log(`Posición de la pieza seleccionada: ${tablero.obtenerPieza(piezaClicada.id).posicion.toUpperCase()}`);
 
-                        // Resalta la casilla destino con color naranja y actualiza la última casilla movida
-                        casillaClicada.style.backgroundColor = "orange";
+                        // Verificar si la casilla clicada tiene una pieza para ser comida
+                        const piezaComida = tablero.obtenerPieza(casillaClicada.id);
+                        if (piezaComida) {
+                            console.log(`Se ha comido la pieza: ${piezaComida.posicion}`);
+                            // Aquí puedes agregar más lógica de la captura si es necesario
+                        } else {
+                            console.log("No se ha comido ninguna pieza");
+                        }
+
+                        // Mover la pieza
+                        tablero.obtenerPieza(piezaClicada.id).mover(casillaClicada.id.toUpperCase());
+                        console.log(`Movimiento realizado a: ${casillaClicada.id.toUpperCase()}`);
+
+                        // Verificar si la casilla está vacía antes de resaltar
+                        if (!piezaComida) {
+                            casillaClicada.style.backgroundColor = "orange";
+                            console.log(`Casilla destino resaltada con color naranja: ${casillaClicada.id}`);
+                        }
                         ultimaCasillaMovida = casillaClicada.id;
                     } else {
                         // Si la casilla destino NO es válida, no se hace el movimiento y no se resalta nada.
-                        // (Opcional) Puedes mostrar un mensaje o simplemente no hacer nada.
+                        console.log("Movimiento no válido, no se resalta nada");
                     }
 
                     piezaClicada = null; // Limpiar la selección de la pieza
