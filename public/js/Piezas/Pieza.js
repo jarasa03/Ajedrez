@@ -57,14 +57,20 @@ export class Pieza {
                 this.restaurarColorCasilla(ultimaCasillaResaltada);
             }
     
-            // Resaltar la nueva casilla
-            casillaNueva.style.backgroundColor = "orange";
+            // Verificar si hay una pieza enemiga en la nueva casilla
+            const piezaEnNuevaCasilla = tablero.obtenerPieza(nuevaPosicion);
+    
+            // Resaltar la nueva casilla: rojo si se come una pieza, naranja si está vacía
+            if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
+                casillaNueva.style.backgroundColor = "#ff3232";
+            } else {
+                casillaNueva.style.backgroundColor = "orange";
+            }
     
             // Guardar la nueva casilla como la última casilla resaltada
             ultimaCasillaResaltada = casillaNueva;
     
-            // Verificar si hay una pieza enemiga en la nueva casilla
-            const piezaEnNuevaCasilla = tablero.obtenerPieza(nuevaPosicion);
+            // Si hay una pieza enemiga, la eliminamos
             if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
                 const piezaElemento = casillaNueva.querySelector(".pieza");
                 if (piezaElemento) {
@@ -149,6 +155,7 @@ export class Pieza {
             return true;
         }
     }
+    
     
 
 
