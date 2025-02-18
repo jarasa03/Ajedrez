@@ -10,6 +10,7 @@ let cronometroActivoNegras = false;
 const cronoBlancas = document.getElementById("crono-blancas");
 const cronoNegras = document.getElementById("crono-negras");
 let ultimaCasillaMovida = null;
+let ultimaCasillaResaltada = null; // Variable global para almacenar la última casilla resaltada
 
 export class Pieza {
     constructor(color, tipo, posicion) {
@@ -24,53 +25,76 @@ export class Pieza {
 
     }
 
+    // Función para restaurar el color de la casilla
+    restaurarColorCasilla(casilla) {
+        if (casilla) { // Verificar que la casilla no sea null
+            if (casilla.classList.contains('casilla-blanca')) {
+                casilla.style.backgroundColor = "var(--color-casilla-blanca)";
+            } else if (casilla.classList.contains('casilla-negra')) {
+                casilla.style.backgroundColor = "var(--color-casilla-negra)";
+            } else {
+                console.warn("La casilla no tiene una clase válida para restaurar el color.");
+            }
+        }
+    }
+
     mover(nuevaPosicion) {
         if (this.color === turno) {
             const movimientosValidos = this.calcularMovimientos();
-
+    
             if (!movimientosValidos.includes(nuevaPosicion)) {
                 return false;
             }
-
+    
             // Obtener la casilla actual y la nueva casilla
             const casillaActual = document.querySelector(`#${this.posicion.toUpperCase()}`);
             const casillaNueva = document.querySelector(`#${nuevaPosicion.toUpperCase()}`);
-
+    
             if (!casillaNueva) {
                 return false;
             }
-
+    
+            // Restaurar el color de la última casilla resaltada (si existe)
+            if (ultimaCasillaResaltada && ultimaCasillaResaltada !== casillaNueva) {
+                this.restaurarColorCasilla(ultimaCasillaResaltada);
+            }
+    
+            // Resaltar la nueva casilla
+            casillaNueva.style.backgroundColor = "orange";
+            
+            // Guardar la nueva casilla como la última casilla resaltada
+            ultimaCasillaResaltada = casillaNueva;
+    
             // Verificar si hay una pieza enemiga en la nueva casilla
             const piezaEnNuevaCasilla = tablero.obtenerPieza(nuevaPosicion);
             if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
-                // Eliminar visualmente la pieza enemiga
                 const piezaElemento = casillaNueva.querySelector(".pieza");
                 if (piezaElemento) {
                     piezaElemento.remove();
                 }
-                // Eliminar la pieza enemiga del tablero lógico
                 tablero.eliminarPieza(nuevaPosicion);
             }
-
+    
             // Eliminar la pieza visualmente de la casilla actual
             const piezaElementoActual = casillaActual.querySelector(".pieza");
             if (piezaElementoActual) {
                 piezaElementoActual.remove();
             }
-
+    
             // Actualizar la lógica del tablero
-            tablero.eliminarPieza(this.posicion); // Borrar la referencia de la posición anterior
-            this.posicion = nuevaPosicion; // Actualizar la posición
-            tablero.colocarPieza(this); // Registrar la nueva posición en el tablero
-
+            tablero.eliminarPieza(this.posicion); 
+            this.posicion = nuevaPosicion;
+            tablero.colocarPieza(this);
+    
             // Colocar la pieza visualmente en la nueva casilla
             this.colocarEnTablero();
-
+    
             // Si es el primer movimiento del peón, actualizar el flag
             if (this.primerMovimiento) {
                 this.primerMovimiento = false;
             }
-
+    
+            // Cambiar el turno
             if (turno === "blanca") {
                 iniciarCronometroNegro();
                 detenerCronometroBlancas();
@@ -78,9 +102,10 @@ export class Pieza {
             } else {
                 iniciarCronometroBlanco();
                 detenerCronometroNegras();
-                turno = "blanca"
+                turno = "blanca";
             }
-
+    
+            // Comprobar si queda un solo rey en el tablero
             let reyes = document.querySelectorAll(".rey");
             if (reyes.length === 1) {
                 if (reyes[0].classList.contains("pieza-blanca")) {
@@ -89,20 +114,17 @@ export class Pieza {
                     window.location.href = "../ganadores/gananNegras.html";
                 }
             }
-
-
-
+    
             return true;
         }
-
     }
+
 
     calcularMovimientos() {
         throw new Error("Método 'calcularMovimientos' debe ser implementado por la subclase");
     }
 
     colocarEnTablero() {
-
         const casilla = document.querySelector(`#${this.posicion.toUpperCase()}`);
         if (casilla) {
             const piezaDiv = document.createElement("span");
@@ -136,11 +158,9 @@ export class Pieza {
 
             document.addEventListener("mouseup", (event) => {
                 // Restaurar los colores de las casillas de movimiento (el resaltado temporal)
-                console.log("Restaurando colores de las casillas posibles...");
                 casillasPosibles.forEach(id => {
                     let casilla = document.getElementById(id);
                     if (casilla) {
-                        console.log(`Restaurando color de la casilla: ${id}`);
                         casilla.style.backgroundColor = coloresOriginales[id] || "";
                     }
                 });
@@ -148,51 +168,25 @@ export class Pieza {
                 // Proceder con el movimiento de la pieza si se suelta sobre una casilla válida
                 if (piezaClicada) {
                     const casillaClicada = event.target;
-                    console.log(`Casilla clicada: ${casillaClicada.id}`);
 
                     // Verificar que la casilla destino sea una de las válidas
                     if (casillaClicada && casillasPosibles.includes(casillaClicada.id.toUpperCase())) {
-                        console.log("Movimiento válido, procesando...");
 
                         // Restaurar el color de la casilla del último movimiento si es diferente
                         if (ultimaCasillaMovida && ultimaCasillaMovida !== casillaClicada.id) {
                             let casillaAnterior = document.getElementById(ultimaCasillaMovida);
                             if (casillaAnterior) {
-                                console.log(`Restaurando color de la última casilla: ${ultimaCasillaMovida}`);
-                                if (casillaAnterior.classList.contains('casilla-blanca')) {
-                                    casillaAnterior.style.backgroundColor = "var(--color-casilla-blanca)";
-                                } else if (casillaAnterior.classList.contains('casilla-negra')) {
-                                    casillaAnterior.style.backgroundColor = "var(--color-casilla-negra)";
+                                if (coloresOriginales[ultimaCasillaMovida]) {
+                                    casillaAnterior.style.backgroundColor = coloresOriginales[ultimaCasillaMovida];
                                 }
                             }
                         }
 
-                        console.log(`Posición de la pieza seleccionada: ${tablero.obtenerPieza(piezaClicada.id).posicion.toUpperCase()}`);
-
-                        // Verificar si la casilla clicada tiene una pieza para ser comida
-                        const piezaComida = tablero.obtenerPieza(casillaClicada.id);
-                        if (piezaComida) {
-                            console.log(`Se ha comido la pieza: ${piezaComida.posicion}`);
-                            // Aquí puedes agregar más lógica de la captura si es necesario
-                        } else {
-                            console.log("No se ha comido ninguna pieza");
-                        }
-
                         // Mover la pieza
                         tablero.obtenerPieza(piezaClicada.id).mover(casillaClicada.id.toUpperCase());
-                        console.log(`Movimiento realizado a: ${casillaClicada.id.toUpperCase()}`);
 
-                        // Verificar si la casilla está vacía antes de resaltar
-                        if (!piezaComida) {
-                            casillaClicada.style.backgroundColor = "orange";
-                            console.log(`Casilla destino resaltada con color naranja: ${casillaClicada.id}`);
-                        }
                         ultimaCasillaMovida = casillaClicada.id;
-                    } else {
-                        // Si la casilla destino NO es válida, no se hace el movimiento y no se resalta nada.
-                        console.log("Movimiento no válido, no se resalta nada");
                     }
-
                     piezaClicada = null; // Limpiar la selección de la pieza
                 }
 
