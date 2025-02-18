@@ -9,6 +9,7 @@ let cronometroActivoBlancas = false;
 let cronometroActivoNegras = false;
 const cronoBlancas = document.getElementById("crono-blancas");
 const cronoNegras = document.getElementById("crono-negras");
+let ultimaCasillaMovida = null;
 
 export class Pieza {
     constructor(color, tipo, posicion) {
@@ -133,28 +134,50 @@ export class Pieza {
                 });
             });
 
-            document.addEventListener("mouseup", () => {
-                // Restaurar los colores originales cuando el mouse se suelta
+            document.addEventListener("mouseup", (event) => {
+                // Restaurar los colores de las casillas de movimiento (el resaltado temporal)
                 casillasPosibles.forEach(id => {
                     let casilla = document.getElementById(id);
                     if (casilla) {
-                        casilla.style.backgroundColor = coloresOriginales[id] || ""; // Restaurar color original
+                        casilla.style.backgroundColor = coloresOriginales[id] || "";
                     }
                 });
-                // Proceder con el movimiento de la pieza (como en tu lógica original)
+
+                // Proceder con el movimiento de la pieza si se suelta sobre una casilla válida
                 if (piezaClicada) {
                     const casillaClicada = event.target;
-                    if (casillaClicada) {
+
+                    // Verificar que la casilla destino sea una de las válidas
+                    if (casillaClicada && casillasPosibles.includes(casillaClicada.id)) {
+                        // Restaurar el color de la casilla del último movimiento si es diferente
+                        if (ultimaCasillaMovida && ultimaCasillaMovida !== casillaClicada.id) {
+                            let casillaAnterior = document.getElementById(ultimaCasillaMovida);
+                            if (casillaAnterior) {
+                                if (casillaAnterior.classList.contains('casilla-blanca')) {
+                                    casillaAnterior.style.backgroundColor = "var(--color-casilla-blanca)";
+                                } else if (casillaAnterior.classList.contains('casilla-negra')) {
+                                    casillaAnterior.style.backgroundColor = "var(--color-casilla-negra)";
+                                }
+                            }
+                        }
+
                         console.log(tablero.obtenerPieza(piezaClicada.id).posicion.toUpperCase());
                         tablero.obtenerPieza(piezaClicada.id).mover(casillaClicada.id.toUpperCase());
                         console.log(casillaClicada.id.toUpperCase());
-                        piezaClicada = null; // Limpiar la selección de la pieza después de moverla
+
+                        // Resalta la casilla destino con color naranja y actualiza la última casilla movida
+                        casillaClicada.style.backgroundColor = "orange";
+                        ultimaCasillaMovida = casillaClicada.id;
+                    } else {
+                        // Si la casilla destino NO es válida, no se hace el movimiento y no se resalta nada.
+                        // (Opcional) Puedes mostrar un mensaje o simplemente no hacer nada.
                     }
+
+                    piezaClicada = null; // Limpiar la selección de la pieza
                 }
 
-                casillasPosibles = []; // Resetear las casillas posibles después de liberar el mouse
+                casillasPosibles = []; // Resetear las casillas posibles
             });
-
 
             tablero.colocarPieza(this);
             casilla.appendChild(piezaDiv);
