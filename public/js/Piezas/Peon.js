@@ -1,5 +1,9 @@
 import { Pieza } from "./Pieza.js";
 import { tablero } from "../Tablero.js";
+import { Alfil } from "./Alfil.js"
+import { Caballo } from "./Caballo.js"
+import { Reina } from "./Reina.js"
+import { Torre } from "./Torre.js"
 
 export class Peon extends Pieza {
     constructor(color, posicion) {
@@ -19,10 +23,7 @@ export class Peon extends Pieza {
         const fila = parseInt(this.posicion[1]) - 1; // Conversión de la fila para que empiece desde 0
         const movimientosPosibles = [];
 
-        // Verificar que la columna esté bien calculada
-        console.log(`Posición inicial: Columna = ${columna} (Letra ${this.posicion[0]}), Fila = ${fila + 1}`);
         if (columna === -1) {
-            console.log("Error: Columna inválida.");
             return movimientosPosibles;
         }
 
@@ -79,4 +80,55 @@ export class Peon extends Pieza {
 
         return movimientosPosibles;
     }
+
+    promocionar() {
+        const opciones = ["Reina", "Torre", "Alfil", "Caballo"];
+        const seleccion = prompt(`Selecciona la pieza para la promoción (Reina, Torre, Alfil, Caballo):`);
+    
+        if (opciones.includes(seleccion)) {
+            let nuevaPieza;
+    
+            switch (seleccion) {
+                case "Reina":
+                    nuevaPieza = new Reina(this.color, this.posicion);
+                    break;
+                case "Torre":
+                    nuevaPieza = new Torre(this.color, this.posicion);
+                    break;
+                case "Alfil":
+                    nuevaPieza = new Alfil(this.color, this.posicion);
+                    break;
+                case "Caballo":
+                    nuevaPieza = new Caballo(this.color, this.posicion);
+                    break;
+            }
+    
+            // Eliminar el peón del tablero lógico
+            tablero.eliminarPieza(this.posicion);
+    
+            // Colocar la nueva pieza en la misma posición en el tablero lógico
+            tablero.colocarPieza(nuevaPieza);
+    
+            // Aquí asumo que hay un método visual para eliminar la pieza y colocar la nueva
+            this.eliminarDeLaVisualizacion();  // Asegúrate de tener este método implementado
+            nuevaPieza.colocarEnTablero();     // Coloca la nueva pieza visualmente
+    
+            // Actualizamos la posición del peón promocionado
+            this.posicion = nuevaPieza.posicion;
+        }
+    }
+    
+    // Método para eliminar la pieza de la visualización
+    eliminarDeLaVisualizacion() {
+        // Obtenemos la referencia al elemento de la casilla en el DOM usando el ID correspondiente a la posición
+        const casilla = document.getElementById(this.posicion.toUpperCase());
+        
+        if (casilla) {
+            // Limpiar el contenido de la casilla (se asume que la pieza está representada por el símbolo en el innerHTML)
+            casilla.innerHTML = '';
+        }
+    }
+    
+    
+
 }

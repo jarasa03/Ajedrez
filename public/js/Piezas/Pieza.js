@@ -32,8 +32,6 @@ export class Pieza {
                 casilla.style.backgroundColor = "var(--color-casilla-blanca)";
             } else if (casilla.classList.contains('casilla-negra')) {
                 casilla.style.backgroundColor = "var(--color-casilla-negra)";
-            } else {
-                console.warn("La casilla no tiene una clase válida para restaurar el color.");
             }
         }
     }
@@ -61,7 +59,7 @@ export class Pieza {
     
             // Resaltar la nueva casilla
             casillaNueva.style.backgroundColor = "orange";
-            
+    
             // Guardar la nueva casilla como la última casilla resaltada
             ultimaCasillaResaltada = casillaNueva;
     
@@ -82,7 +80,7 @@ export class Pieza {
             }
     
             // Actualizar la lógica del tablero
-            tablero.eliminarPieza(this.posicion); 
+            tablero.eliminarPieza(this.posicion);
             this.posicion = nuevaPosicion;
             tablero.colocarPieza(this);
     
@@ -92,6 +90,39 @@ export class Pieza {
             // Si es el primer movimiento del peón, actualizar el flag
             if (this.primerMovimiento) {
                 this.primerMovimiento = false;
+            }
+    
+            // Verificar si el peón ha llegado a la fila de promoción
+            const filaPromocion = this.color === "blanca" ? 8 : 1;
+            const filaPeon = parseInt(this.posicion[1]);
+    
+            console.log(`Posición actual: ${this.posicion}`);
+            console.log(`Fila de promoción: ${filaPromocion}`);
+            console.log(`Fila del peón: ${filaPeon}`);
+    
+            if (filaPeon === filaPromocion && this.constructor.name === "Peon") {
+                console.log('¡El peón ha llegado a la fila de promoción!');
+    
+                // Eliminar el peón antes de la promoción
+                tablero.eliminarPieza(this.posicion);
+    
+                // Ahora promovemos al peón
+                this.promocionar();
+    
+                // Cambiar el turno después de la promoción
+                if (turno === "blanca") {
+                    turno = "negra";
+                    iniciarCronometroNegro();
+                    detenerCronometroBlancas();
+                } else {
+                    turno = "blanca";
+                    iniciarCronometroBlanco();
+                    detenerCronometroNegras();
+                }
+    
+                return true;
+            } else {
+                console.log('No se ha cumplido la condición de promoción.');
             }
     
             // Cambiar el turno
@@ -118,6 +149,8 @@ export class Pieza {
             return true;
         }
     }
+    
+
 
 
     calcularMovimientos() {
