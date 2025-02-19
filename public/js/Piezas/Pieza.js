@@ -39,37 +39,37 @@ export class Pieza {
     mover(nuevaPosicion) {
         if (this.color === turno) {
             const movimientosValidos = this.calcularMovimientos();
-    
+
             if (!movimientosValidos.includes(nuevaPosicion)) {
                 return false;
             }
-    
+
             // Obtener la casilla actual y la nueva casilla
             const casillaActual = document.querySelector(`#${this.posicion.toUpperCase()}`);
             const casillaNueva = document.querySelector(`#${nuevaPosicion.toUpperCase()}`);
-    
+
             if (!casillaNueva) {
                 return false;
             }
-    
+
             // Restaurar el color de la última casilla resaltada (si existe)
             if (ultimaCasillaResaltada && ultimaCasillaResaltada !== casillaNueva) {
                 this.restaurarColorCasilla(ultimaCasillaResaltada);
             }
-    
+
             // Verificar si hay una pieza enemiga en la nueva casilla
             const piezaEnNuevaCasilla = tablero.obtenerPieza(nuevaPosicion);
-    
+
             // Resaltar la nueva casilla: rojo si se come una pieza, naranja si está vacía
             if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
                 casillaNueva.style.backgroundColor = "#ff3232";
             } else {
                 casillaNueva.style.backgroundColor = "orange";
             }
-    
+
             // Guardar la nueva casilla como la última casilla resaltada
             ultimaCasillaResaltada = casillaNueva;
-    
+
             // Si hay una pieza enemiga, la eliminamos
             if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
                 const piezaElemento = casillaNueva.querySelector(".pieza");
@@ -78,38 +78,41 @@ export class Pieza {
                 }
                 tablero.eliminarPieza(nuevaPosicion);
             }
-    
+
             // Eliminar la pieza visualmente de la casilla actual
             const piezaElementoActual = casillaActual.querySelector(".pieza");
             if (piezaElementoActual) {
                 piezaElementoActual.remove();
             }
-    
+
             // Actualizar la lógica del tablero
             tablero.eliminarPieza(this.posicion);
             this.posicion = nuevaPosicion;
             tablero.colocarPieza(this);
-    
+
             // Colocar la pieza visualmente en la nueva casilla
             this.colocarEnTablero();
-    
+
             // Si es el primer movimiento del peón, actualizar el flag
             if (this.primerMovimiento) {
-                this.primerMovimiento = false;
+                this.vulnerableEnPassant = true;
+            } else {
+                this.vulnerableEnPassant = false;
             }
-    
+            this.primerMovimiento = false;
+
             // Verificar si el peón ha llegado a la fila de promoción
             const filaPromocion = this.color === "blanca" ? 8 : 1;
             const filaPeon = parseInt(this.posicion[1]);
-    
+
             if (filaPeon === filaPromocion && this.constructor.name === "Peon") {
-    
+
                 // Eliminar el peón antes de la promoción
                 tablero.eliminarPieza(this.posicion);
-    
+
                 // Ahora promovemos al peón
                 this.promocionar();
-    
+
                 // Cambiar el turno después de la promoción
                 if (turno === "blanca") {
                     turno = "negra";
@@ -120,10 +123,10 @@ export class Pieza {
                     iniciarCronometroBlanco();
                     detenerCronometroNegras();
                 }
-    
+
                 return true;
             }
-    
+
             // Cambiar el turno
             if (turno === "blanca") {
                 iniciarCronometroNegro();
@@ -134,7 +137,7 @@ export class Pieza {
                 detenerCronometroNegras();
                 turno = "blanca";
             }
-    
+
             // Comprobar si queda un solo rey en el tablero
             let reyes = document.querySelectorAll(".rey");
             if (reyes.length === 1) {
@@ -144,12 +147,12 @@ export class Pieza {
                     window.location.href = "../ganadores/gananNegras.html";
                 }
             }
-    
+
             return true;
         }
     }
-    
-    
+
+
 
 
 
