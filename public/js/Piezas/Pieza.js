@@ -57,8 +57,25 @@ export class Pieza {
                 this.restaurarColorCasilla(ultimaCasillaResaltada);
             }
 
-            // Verificar si hay una pieza enemiga en la nueva casilla
-            const piezaEnNuevaCasilla = tablero.obtenerPieza(nuevaPosicion);
+            // Obtenemos la pieza en la casilla destino (si existe)
+            let piezaEnNuevaCasilla = tablero.obtenerPieza(nuevaPosicion);
+
+            // --- NUEVA PARTE: Detección de en passant ---
+            // Calculamos los índices (asumiendo posiciones tipo "E5")
+            const arrayLetras = ["A", "B", "C", "D", "E", "F", "G", "H"];
+            const currentCol = arrayLetras.indexOf(this.posicion[0]);
+            const currentRow = parseInt(this.posicion[1]) - 1;
+            const newCol = arrayLetras.indexOf(nuevaPosicion[0]);
+            const newRow = parseInt(nuevaPosicion[1]) - 1;
+            // Determinamos la dirección de movimiento del peón
+            const direccion = this.color === "blanca" ? 1 : -1;
+
+            // Se considera en passant si el movimiento es diagonal (diferencia de 1 en columnas)
+            // y el avance en filas es el correcto, pero no hay pieza en la casilla destino.
+            let enPassant = false;
+            if (Math.abs(newCol - currentCol) === 1 && (newRow - currentRow) === direccion && !piezaEnNuevaCasilla) {
+                enPassant = true;
+            }
 
             // Resaltar la nueva casilla: rojo si se come una pieza, naranja si está vacía
             if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
@@ -70,7 +87,7 @@ export class Pieza {
             // Guardar la nueva casilla como la última casilla resaltada
             ultimaCasillaResaltada = casillaNueva;
 
-            // Si hay una pieza enemiga, la eliminamos
+            // Si hay una pieza enemiga en la casilla destino, se elimina (captura normal)
             if (piezaEnNuevaCasilla && piezaEnNuevaCasilla.color !== this.color) {
                 const piezaElemento = casillaNueva.querySelector(".pieza");
                 if (piezaElemento) {
@@ -78,6 +95,24 @@ export class Pieza {
                 }
                 tablero.eliminarPieza(nuevaPosicion);
             }
+
+            // --- Procesamos la captura al paso ---
+            if (enPassant) {
+                // La casilla del peón a capturar se encuentra en la misma columna que la casilla destino,
+                // pero en la fila en la que estaba el peón atacante.
+                const posPiezaCapturada = arrayLetras[newCol] + (currentRow + 1); // (currentRow +1) para volver a 1-indexado
+                console.log(`En passant: se capturará la pieza en ${posPiezaCapturada}`);
+                // Eliminar la pieza en la casilla indicada (tanto en el DOM como en la lógica del tablero)
+                const casillaPiezaCapturada = document.querySelector(`#${posPiezaCapturada.toUpperCase()}`);
+                if (casillaPiezaCapturada) {
+                    const piezaElementoCapturada = casillaPiezaCapturada.querySelector(".pieza");
+                    if (piezaElementoCapturada) {
+                        piezaElementoCapturada.remove();
+                    }
+                }
+                tablero.eliminarPieza(posPiezaCapturada);
+            }
+            // ----------------------------------
 
             // Eliminar la pieza visualmente de la casilla actual
             const piezaElementoActual = casillaActual.querySelector(".pieza");
@@ -93,9 +128,12 @@ export class Pieza {
             // Colocar la pieza visualmente en la nueva casilla
             this.colocarEnTablero();
 
-            // Si es el primer movimiento del peón, actualizar el flag
+            // Actualizar flags del peón
             if (this.primerMovimiento) {
-                this.vulnerableEnPassant = true;
+                // Si se movió dos casillas, ya se debería haber marcado la vulnerabilidad en el método mover del peón.
+                // Aquí puedes decidir si dejarlo activo o reiniciarlo según la lógica de turno.
+                // Por ejemplo, si el movimiento no fue de dos casillas, desactivar:
+                this.vulnerableEnPassant = (Math.abs(newRow - currentRow) === 2);
             } else {
                 this.vulnerableEnPassant = false;
             }
@@ -106,11 +144,9 @@ export class Pieza {
             const filaPeon = parseInt(this.posicion[1]);
 
             if (filaPeon === filaPromocion && this.constructor.name === "Peon") {
-
-                // Eliminar el peón antes de la promoción
+                // Eliminar el peón del tablero lógico antes de la promoción
                 tablero.eliminarPieza(this.posicion);
-
-                // Ahora promovemos al peón
+                // Promocionar el peón
                 this.promocionar();
 
                 // Cambiar el turno después de la promoción
@@ -123,7 +159,6 @@ export class Pieza {
                     iniciarCronometroBlanco();
                     detenerCronometroNegras();
                 }
-
                 return true;
             }
 
@@ -138,6 +173,9 @@ export class Pieza {
                 turno = "blanca";
             }
 
+            // Reiniciamos la vulnerabilidad al en passant
+            resetEnPassantVulnerability(turno);
+
             // Comprobar si queda un solo rey en el tablero
             let reyes = document.querySelectorAll(".rey");
             if (reyes.length === 1) {
@@ -151,6 +189,7 @@ export class Pieza {
             return true;
         }
     }
+
 
 
 
@@ -236,6 +275,19 @@ export class Pieza {
     }
 
 }
+
+function resetEnPassantVulnerability(turno) {
+    for (const casilla in tablero.casillas) {
+        const pieza = tablero.casillas[casilla];
+        // Si la pieza es un Peón, pertenece al equipo que tiene el turno y es vulnerable, la desactivamos
+        if (pieza && pieza.constructor.name === "Peon" && pieza.vulnerableEnPassant) {
+            if ((turno === "blanca" && pieza.esBlanca) || (turno === "negra" && !pieza.esBlanca)) {
+                pieza.vulnerableEnPassant = false;
+            }
+        }
+    }
+}
+
 
 function actualizarCronometroBlanco() {
     const minutos = Math.floor(tiempoBlancas / 60).toString().padStart(2, '0');
