@@ -97,9 +97,6 @@ export class Peon extends Pieza {
                 const posLateral = (arrayLetras[pos.col] + (pos.row + 1)).toUpperCase();
                 const piezaLateral = tablero.obtenerPieza(posLateral);
 
-                // Debug: Mostramos la información de la casilla lateral
-                console.log(`Revisando en passant en ${posLateral}:`, piezaLateral);
-
                 // Verificamos que la pieza lateral sea un peón enemigo y esté vulnerable al paso
                 if (
                     piezaLateral &&
@@ -109,7 +106,6 @@ export class Peon extends Pieza {
                 ) {
                     // La casilla de destino para la captura al paso es la diagonal hacia adelante
                     const nuevaPosicionEnPassant = (arrayLetras[pos.col] + ((fila + direccion) + 1)).toUpperCase();
-                    console.log(`Se detecta en passant: ${this.posicion} capturará en ${nuevaPosicionEnPassant}`);
                     movimientosPosibles.push(nuevaPosicionEnPassant);
                 }
             }

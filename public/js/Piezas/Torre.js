@@ -4,7 +4,7 @@ import { tablero } from "../Tablero.js";
 export class Torre extends Pieza {
     constructor(color, posicion) {
         super(color, "Torre", posicion);
-
+        this.primerMovimiento = "true";
         // Colocamos la pieza en su casilla
         this.colocarEnTablero();
     }

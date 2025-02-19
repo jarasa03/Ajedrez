@@ -107,7 +107,6 @@ export class Pieza {
                 // La casilla del peón a capturar se encuentra en la misma columna que la casilla destino,
                 // pero en la fila en la que estaba el peón atacante.
                 const posPiezaCapturada = arrayLetras[newCol] + (currentRow + 1); // (currentRow +1) para volver a 1-indexado
-                console.log(`En passant: se capturará la pieza en ${posPiezaCapturada}`);
                 // Eliminar la pieza en la casilla indicada (tanto en el DOM como en la lógica del tablero)
                 const casillaPiezaCapturada = document.querySelector(`#${posPiezaCapturada.toUpperCase()}`);
                 if (casillaPiezaCapturada) {
@@ -136,6 +135,67 @@ export class Pieza {
 
             // Colocar la pieza visualmente en la nueva casilla
             this.colocarEnTablero();
+
+            // --- NUEVO CÓDIGO: Lógica de enroque para el Rey ---
+            // Solo se ejecuta si la pieza es un Rey y se mueve desde su posición inicial
+            if (this.constructor.name === "Rey") {
+                // Definimos la posición inicial del Rey según el color
+                const posInicialRey = this.color === "blanca" ? "E1" : "E8";
+                // Si el Rey se mueve desde su posición inicial, evaluamos si se realizó un enroque
+                if (this.posicion.toUpperCase() !== posInicialRey) {
+                    // Obtenemos la columna (A...H) tanto de la posición inicial como la actual
+                    const arrayLetras = ["A", "B", "C", "D", "E", "F", "G", "H"];
+                    const colInicial = arrayLetras.indexOf(posInicialRey[0]);
+                    const colActual = arrayLetras.indexOf(this.posicion[0]);
+                    const diff = colActual - colInicial;
+
+                    // Si se mueve dos columnas, es enroque
+                    if (Math.abs(diff) === 2) {
+                        const fila = posInicialRey[1]; // '1' o '8'
+                        if (diff > 0) {
+                            // Enroque corto: la torre de H se mueve a F
+                            const posTorreInicial = "H" + fila;
+                            const posTorreDestino = "F" + fila;
+                            const torre = tablero.obtenerPieza(posTorreInicial);
+                            if (torre && torre.constructor.name === "Torre" && torre.primerMovimiento) {
+                                // Actualizar visualmente: quitar la torre de su casilla original
+                                const casillaTorreInicial = document.querySelector(`#${posTorreInicial.toUpperCase()}`);
+                                if (casillaTorreInicial) {
+                                    const piezaTorre = casillaTorreInicial.querySelector(".pieza");
+                                    if (piezaTorre) {
+                                        piezaTorre.remove();
+                                    }
+                                }
+                                // Actualizamos la lógica del tablero
+                                tablero.eliminarPieza(posTorreInicial);
+                                torre.posicion = posTorreDestino;
+                                tablero.colocarPieza(torre);
+                                torre.colocarEnTablero();
+                                torre.primerMovimiento = false;
+                            }
+                        } else {
+                            // Enroque largo: la torre de A se mueve a D
+                            const posTorreInicial = "A" + fila;
+                            const posTorreDestino = "D" + fila;
+                            const torre = tablero.obtenerPieza(posTorreInicial);
+                            if (torre && torre.constructor.name === "Torre" && torre.primerMovimiento) {
+                                const casillaTorreInicial = document.querySelector(`#${posTorreInicial.toUpperCase()}`);
+                                if (casillaTorreInicial) {
+                                    const piezaTorre = casillaTorreInicial.querySelector(".pieza");
+                                    if (piezaTorre) {
+                                        piezaTorre.remove();
+                                    }
+                                }
+                                tablero.eliminarPieza(posTorreInicial);
+                                torre.posicion = posTorreDestino;
+                                tablero.colocarPieza(torre);
+                                torre.colocarEnTablero();
+                                torre.primerMovimiento = false;
+                            }
+                        }
+                    }
+                }
+            }
 
             // Actualizar flags del peón
             if (this.primerMovimiento) {
