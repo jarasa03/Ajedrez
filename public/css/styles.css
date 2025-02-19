@@ -177,6 +177,36 @@ p {
 .casilla-seleccionable {
     background-color: var(--color-casilla-seleccionable);
 }
+#cuadro-promocion {
+    background-color: lightblue;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    height: calc(var(--tamanyo-casilla) * 3);
+    width: calc(var(--tamanyo-casilla) * 8);
+}
+
+#mensaje-promocion {
+    font-size: calc(var(--tamanyo-fuente-pieza)/2); /* Usando rem para que sea relativo al tamaño base de la fuente */
+    font-weight: bold;
+    -webkit-text-stroke: 0px;
+    color: var(--color-marco);
+}
+
+.cuadro-promocion button {
+    background-color: var(--color-casilla-seleccionable);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: calc(var(--tamanyo-fuente-pieza)/2);
+    cursor: pointer;
+    width: calc(var(--tamanyo-fuente-pieza) + 2);
+    height: calc(var(--tamanyo-fuente-pieza) + 2);
+}
+
+.cuadro-promocion button:hover {
+    background-color: var(--color-casilla-negra);
+}
+
 
 #fila-A {
     grid-column: 3 / 4;

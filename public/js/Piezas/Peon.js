@@ -122,40 +122,76 @@ export class Peon extends Pieza {
 
     promocionar() {
         const opciones = ["Reina", "Torre", "Alfil", "Caballo"];
-        const seleccion = prompt(`Selecciona la pieza para la promoción (Reina, Torre, Alfil, Caballo):`);
-
-        if (opciones.includes(seleccion)) {
-            let nuevaPieza;
-
-            switch (seleccion) {
-                case "Reina":
-                    nuevaPieza = new Reina(this.color, this.posicion);
-                    break;
-                case "Torre":
-                    nuevaPieza = new Torre(this.color, this.posicion);
-                    break;
-                case "Alfil":
-                    nuevaPieza = new Alfil(this.color, this.posicion);
-                    break;
-                case "Caballo":
-                    nuevaPieza = new Caballo(this.color, this.posicion);
-                    break;
-            }
-
-            // Eliminar el peón del tablero lógico
-            tablero.eliminarPieza(this.posicion);
-
-            // Colocar la nueva pieza en la misma posición en el tablero lógico
-            tablero.colocarPieza(nuevaPieza);
-
-            // Aquí asumo que hay un método visual para eliminar la pieza y colocar la nueva
-            this.eliminarDeLaVisualizacion(); // Asegúrate de tener este método implementado
-            nuevaPieza.colocarEnTablero(); // Coloca la nueva pieza visualmente
-
-            // Actualizamos la posición del peón promocionado
-            this.posicion = nuevaPieza.posicion;
-        }
+        
+        // Crear un contenedor para la selección con un ID
+        const contenedorSeleccion = document.createElement('div');
+        contenedorSeleccion.id = "cuadro-promocion"; // Añadido id para acceder fácilmente
+        contenedorSeleccion.className = "cuadro-promocion"; // Añadido class para estilos adicionales
+        contenedorSeleccion.style.position = "absolute";
+        contenedorSeleccion.style.top = "50%";
+        contenedorSeleccion.style.left = "50%";
+        contenedorSeleccion.style.transform = "translate(-50%, -50%)";
+        contenedorSeleccion.style.backgroundColor = "white";
+        contenedorSeleccion.style.padding = "20px";
+        contenedorSeleccion.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+        contenedorSeleccion.style.borderRadius = "8px";
+        contenedorSeleccion.style.textAlign = "center";
+        
+        const mensaje = document.createElement('p');
+        mensaje.id = "mensaje-promocion"; // Añadido id para el mensaje
+        mensaje.textContent = "Selecciona la pieza para la promoción:";
+        contenedorSeleccion.appendChild(mensaje);
+    
+        // Crear botones de selección
+        opciones.forEach(opcion => {
+            const boton = document.createElement('button');
+            boton.textContent = opcion;
+            boton.style.margin = "5px";
+            boton.style.padding = "10px";
+            boton.style.fontSize = "16px";
+            boton.addEventListener('click', () => {
+                let nuevaPieza;
+    
+                switch (opcion) {
+                    case "Reina":
+                        nuevaPieza = new Reina(this.color, this.posicion);
+                        break;
+                    case "Torre":
+                        nuevaPieza = new Torre(this.color, this.posicion);
+                        break;
+                    case "Alfil":
+                        nuevaPieza = new Alfil(this.color, this.posicion);
+                        break;
+                    case "Caballo":
+                        nuevaPieza = new Caballo(this.color, this.posicion);
+                        break;
+                    default:
+                        console.error("Selección inválida");
+                        return;
+                }
+    
+                // Eliminar el peón del tablero lógico
+                tablero.eliminarPieza(this.posicion);
+    
+                // Colocar la nueva pieza en la misma posición en el tablero lógico
+                tablero.colocarPieza(nuevaPieza);
+    
+                // Actualizar la visualización
+                this.eliminarDeLaVisualizacion();
+                nuevaPieza.colocarEnTablero();
+    
+                // Actualizar la posición del peón promocionado
+                this.posicion = nuevaPieza.posicion;
+    
+                document.body.removeChild(contenedorSeleccion); // Eliminar el cuadro de selección
+            });
+            contenedorSeleccion.appendChild(boton);
+        });
+    
+        document.body.appendChild(contenedorSeleccion);
     }
+    
+
 
     // Método para eliminar la pieza de la visualización
     eliminarDeLaVisualizacion() {
