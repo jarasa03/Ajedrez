@@ -13,6 +13,8 @@ let ultimaCasillaMovida = null;
 let ultimaCasillaResaltada = null; // Variable global para almacenar la última casilla resaltada
 let casillaComidaEnPassant = null;
 let colorOriginalCasillaEnPassant = null;
+let colorOriginalCasillaEnroque = null;
+let casillaTorreEnroque = null;
 
 export class Pieza {
     constructor(color, tipo, posicion) {
@@ -136,6 +138,10 @@ export class Pieza {
             // Colocar la pieza visualmente en la nueva casilla
             this.colocarEnTablero();
 
+            if (casillaTorreEnroque) {
+                casillaTorreEnroque.style.backgroundColor = colorOriginalCasillaEnroque;
+            }
+
             // --- NUEVO CÓDIGO: Lógica de enroque para el Rey ---
             // Solo se ejecuta si la pieza es un Rey y se mueve desde su posición inicial
             if (this.constructor.name === "Rey") {
@@ -172,6 +178,9 @@ export class Pieza {
                                 tablero.colocarPieza(torre);
                                 torre.colocarEnTablero();
                                 torre.primerMovimiento = false;
+                                casillaTorreEnroque = document.getElementById(posTorreDestino);
+                                colorOriginalCasillaEnroque = document.getElementById(posTorreDestino).style.backgroundColor;
+                                document.getElementById(posTorreDestino).style.backgroundColor = "orange";
                             }
                         } else {
                             // Enroque largo: la torre de A se mueve a D
@@ -191,6 +200,9 @@ export class Pieza {
                                 tablero.colocarPieza(torre);
                                 torre.colocarEnTablero();
                                 torre.primerMovimiento = false;
+                                casillaTorreEnroque = document.getElementById(posTorreDestino);
+                                colorOriginalCasillaEnroque = document.getElementById(posTorreDestino).style.backgroundColor;
+                                document.getElementById(posTorreDestino).style.backgroundColor = "orange";
                             }
                         }
                     }
@@ -258,11 +270,6 @@ export class Pieza {
             return true;
         }
     }
-
-
-
-
-
 
     calcularMovimientos() {
         throw new Error("Método 'calcularMovimientos' debe ser implementado por la subclase");
@@ -356,7 +363,6 @@ function resetEnPassantVulnerability(turno) {
         }
     }
 }
-
 
 function actualizarCronometroBlanco() {
     const minutos = Math.floor(tiempoBlancas / 60).toString().padStart(2, '0');
