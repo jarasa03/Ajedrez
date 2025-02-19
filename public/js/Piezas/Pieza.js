@@ -11,6 +11,8 @@ const cronoBlancas = document.getElementById("crono-blancas");
 const cronoNegras = document.getElementById("crono-negras");
 let ultimaCasillaMovida = null;
 let ultimaCasillaResaltada = null; // Variable global para almacenar la última casilla resaltada
+let casillaComidaEnPassant = null;
+let colorOriginalCasillaEnPassant = null;
 
 export class Pieza {
     constructor(color, tipo, posicion) {
@@ -96,6 +98,10 @@ export class Pieza {
                 tablero.eliminarPieza(nuevaPosicion);
             }
 
+            if (casillaComidaEnPassant) {
+                casillaComidaEnPassant.style.backgroundColor = colorOriginalCasillaEnPassant;
+            }
+
             // --- Procesamos la captura al paso ---
             if (enPassant) {
                 // La casilla del peón a capturar se encuentra en la misma columna que la casilla destino,
@@ -111,6 +117,9 @@ export class Pieza {
                     }
                 }
                 tablero.eliminarPieza(posPiezaCapturada);
+                casillaComidaEnPassant = document.querySelector(`#${posPiezaCapturada.toUpperCase()}`);
+                colorOriginalCasillaEnPassant = casillaComidaEnPassant.style.backgroundColor;
+                casillaComidaEnPassant.style.backgroundColor = "#ff3232";
             }
             // ----------------------------------
 
