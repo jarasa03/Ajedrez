@@ -7,19 +7,19 @@ AjedrezJs es un juego de ajedrez desarrollado en **JavaScript**, con una estruct
 Para ejecutar el proyecto en tu máquina local, sigue estos pasos:
 
 1. __Clonar el repositorio:__
-```bash
-git clone https://github.com/jarasa03/AjedrezJs.git
-cd AjedrezJs
-```
+    ```bash
+    git clone https://github.com/jarasa03/AjedrezJs.git
+    cd AjedrezJs
+    ```
 
 2. __Instalar dependencias:__
-```bash
-npm install
-```
+    ```bash
+    npm install
+    ```
 3. __Iniciar el servidor:__
-```bash
-npm start
-```
+    ```bash
+    npm start
+    ```
 4. __Abrir el juego en el navegador:__
 
     - Accede a: https://localhost:8000
