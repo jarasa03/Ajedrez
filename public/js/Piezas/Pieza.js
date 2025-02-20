@@ -267,6 +267,16 @@ export class Pieza {
                         iniciarCronometroBlanco();
                         detenerCronometroNegras();
                     }
+                    // Verificar si queda un solo rey en el tablero
+                    let reyes = document.querySelectorAll(".rey");
+                    if (reyes.length === 1) {
+                        // Si el único rey restante es blanco, las blancas ganan
+                        if (reyes[0].classList.contains("pieza-blanca")) {
+                            window.location.href = "../ganadores/gananBlancas.html";
+                        } else if (reyes[0].classList.contains("pieza-negra")) {
+                            window.location.href = "../ganadores/gananNegras.html";
+                        }
+                    }
                     return true;
                 }
 
