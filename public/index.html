@@ -2,30 +2,45 @@
 <html lang="es">
 
 <head>
+    <!-- Definición del conjunto de caracteres utilizado en la página -->
     <meta charset="UTF-8">
+    <!-- Permite una visualización adecuada en dispositivos móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajedrez</title>
+    <!-- Enlace a la hoja de estilos para el tablero de ajedrez -->
     <link rel="stylesheet" href="./css/styles.css">
+    <!-- Script que genera el tablero de ajedrez, cargado de forma diferida -->
     <script type="module" defer src="./js/generarTablero.js"></script>
+    <!-- Favicon del sitio -->
     <link rel="icon" href="./assets/favicon.ico">
 </head>
 
 <body>
+    <!-- Contenedor principal de la página -->
     <div id="contenedor">
+        <!-- Lado izquierdo del tablero -->
         <div id="izquierda" class="lados">
+            <!-- Contenedor para el cronómetro de las piezas negras -->
             <div id="contador-negras" class="contadores">
+                <!-- Cronómetro de las piezas negras -->
                 <p id="crono-negras">15:00</p>
             </div>
         </div>
+        <!-- Área central donde se muestra el tablero de ajedrez -->
         <div id="contiene-tabla">
             <div id="numeracion-casillas">
+                <!-- Marco del tablero que contiene las casillas -->
                 <div id="marco">
+                    <!-- Contenedor visual del tablero de ajedrez -->
                     <div class="tablero"></div>
                 </div>
             </div>
         </div>
+        <!-- Lado derecho del tablero -->
         <div id="derecha" class="lados">
+            <!-- Contenedor para el cronómetro de las piezas blancas -->
             <div id="contador-blancas" class="contadores">
+                <!-- Cronómetro de las piezas blancas -->
                 <p id="crono-blancas">15:00</p>
             </div>
         </div>

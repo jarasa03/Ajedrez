@@ -177,6 +177,7 @@ p {
 .casilla-seleccionable {
     background-color: var(--color-casilla-seleccionable);
 }
+
 #cuadro-promocion {
     background-color: lightblue;
     border-radius: 10px;
@@ -186,7 +187,7 @@ p {
 }
 
 #mensaje-promocion {
-    font-size: calc(var(--tamanyo-fuente-pieza)/2); /* Usando rem para que sea relativo al tamaño base de la fuente */
+    font-size: calc(var(--tamanyo-fuente-pieza)/2);
     font-weight: bold;
     -webkit-text-stroke: 0px;
     color: var(--color-marco);
@@ -206,7 +207,6 @@ p {
 .cuadro-promocion button:hover {
     background-color: var(--color-casilla-negra);
 }
-
 
 #fila-A {
     grid-column: 3 / 4;

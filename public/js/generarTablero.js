@@ -4,10 +4,16 @@ import { Alfil } from "./Piezas/Alfil.js";
 import { Reina } from "./Piezas/Reina.js";
 import { Rey } from "./Piezas/Rey.js";
 import { Peon } from "./Piezas/Peon.js";
-import { tablero } from "./Tablero.js";
 
+/**
+ * Letras que representan las columnas del tablero de ajedrez.
+ */
 const columnas = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
+/**
+ * Objeto que almacena las piezas en sus posiciones iniciales.
+ * Las claves representan las coordenadas en notación de ajedrez.
+ */
 const piezasIniciales = {
     "A8": new Torre("negra", "a8"),
     "B8": new Caballo("negra", "b8"),
@@ -47,23 +53,21 @@ const tableroMain = document.querySelector(".tablero");
 const numeracionContenedor = document.getElementById("numeracion-casillas");
 
 /**
- * Crea una casilla del tablero, asigna color y coloca la pieza si existe.
+ * Crea una casilla del tablero, asigna color y devuelve el elemento HTML generado.
  * @param {number} fila - Número de la fila (1 a 8).
- * @param {number} col - Número de la columna (0 a 7).
+ * @param {number} col - Índice de la columna (0 a 7).
  * @returns {HTMLElement} La casilla creada.
  */
 function crearCasilla(fila, col) {
     const casilla = document.createElement("div");
     casilla.classList.add("casilla");
     casilla.id = columnas[col] + fila;
-
     casilla.classList.add((fila + col) % 2 === 0 ? "casilla-blanca" : "casilla-negra");
-
     return casilla;
 }
 
 /**
- * Crea la numeración de las filas con letras (A-H).
+ * Genera la numeración de las filas con letras (A-H) y la inserta en el contenedor correspondiente.
  */
 function crearNumeracionFila() {
     columnas.forEach((columna) => {
@@ -76,7 +80,7 @@ function crearNumeracionFila() {
 }
 
 /**
- * Crea la numeración de las columnas con números (1-8).
+ * Genera la numeración de las columnas con números (1-8) y la inserta en el contenedor correspondiente.
  */
 function crearNumeracionColumnas() {
     for (let i = 1; i <= 8; i++) {
@@ -88,14 +92,17 @@ function crearNumeracionColumnas() {
     }
 }
 
+/**
+ * Coloca las piezas en el tablero llamando a su método correspondiente.
+ */
 function colocarPiezasEnTablero() {
     Object.values(piezasIniciales).forEach(pieza => {
-        pieza.colocarEnTablero(); // Llama a colocarEnTablero para cada pieza
+        pieza.colocarEnTablero();
     });
 }
 
 /**
- * Crea el tablero de ajedrez con las casillas.
+ * Genera el tablero de ajedrez con sus casillas y coloca las piezas.
  */
 function crearTablero() {
     const fragment = document.createDocumentFragment();
@@ -106,11 +113,10 @@ function crearTablero() {
         }
     }
     tableroMain.appendChild(fragment);
-
     colocarPiezasEnTablero();
 }
 
-// Llamar las funciones para generar el tablero y la numeración
+// Inicializa la creación del tablero y la numeración
 crearTablero();
 crearNumeracionFila();
 crearNumeracionColumnas();

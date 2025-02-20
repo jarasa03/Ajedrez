@@ -4,22 +4,30 @@ import { tablero } from "../Tablero.js";
 export class Rey extends Pieza {
     constructor(color, posicion) {
         super(color, "Rey", posicion);
-        // Colocamos la pieza en su casilla
+        // Colocación de la pieza en el tablero
         this.colocarEnTablero();
-        this.primerMovimiento = true;
+        this.primerMovimiento = true; // Se marca si es el primer movimiento del Rey
     }
 
+    /**
+     * Obtiene el símbolo que representa la pieza Rey en el tablero.
+     * @returns {string} El símbolo correspondiente a la pieza (♔ o ♚).
+     */
     obtenerSimboloPieza() {
-        return this.color === "blanca" ? "♔" : "♚"; // Rey blanco o negro
+        return this.color === "blanca" ? "♔" : "♚"; // Retorna el símbolo del Rey blanco o negro
     }
 
+    /**
+     * Calcula los movimientos posibles del Rey. Incluye movimientos normales y enroque.
+     * @returns {string[]} Un arreglo con las posiciones posibles del Rey.
+     */
     calcularMovimientos() {
         const arrayLetras = ["a", "b", "c", "d", "e", "f", "g", "h"];
-        const columna = arrayLetras.indexOf(this.posicion[0].toLowerCase());
-        const fila = parseInt(this.posicion[1]) - 1;
+        const columna = arrayLetras.indexOf(this.posicion[0].toLowerCase()); // Calcula la columna basada en la letra
+        const fila = parseInt(this.posicion[1]) - 1; // Calcula la fila, ajustando para que empiece desde 0
         const movimientosPosibles = [];
 
-        // Movimientos normales (1 casilla en cualquier dirección)
+        // Definición de las direcciones de movimiento del Rey (1 casilla en cualquier dirección)
         const direcciones = [
             { x: 1, y: 0 }, // Derecha
             { x: -1, y: 0 }, // Izquierda
@@ -31,36 +39,40 @@ export class Rey extends Pieza {
             { x: -1, y: -1 } // Diagonal izquierda abajo
         ];
 
+        // Iteración sobre las direcciones posibles para el Rey
         for (const dir of direcciones) {
             let nuevaColumna = columna + dir.x;
             let nuevaFila = fila + dir.y;
+            // Verificación si el movimiento está dentro de los límites del tablero
             if (nuevaColumna >= 0 && nuevaColumna < 8 && nuevaFila >= 0 && nuevaFila < 8) {
-                const nuevaPosicion = (arrayLetras[nuevaColumna] + (nuevaFila + 1)).toUpperCase();
-                const piezaEnDestino = tablero.obtenerPieza(nuevaPosicion);
+                const nuevaPosicion = (arrayLetras[nuevaColumna] + (nuevaFila + 1)).toUpperCase(); // Nueva posición a comprobar
+                const piezaEnDestino = tablero.obtenerPieza(nuevaPosicion); // Obtener pieza en la casilla destino
+                // Si la casilla está vacía o contiene una pieza enemiga, se puede mover
                 if (!piezaEnDestino || piezaEnDestino.color !== this.color) {
-                    movimientosPosibles.push(nuevaPosicion);
+                    movimientosPosibles.push(nuevaPosicion); // Agregar la nueva posición como posible movimiento
                 }
             }
         }
 
         // --- ENROQUE ---
-        // Solo se considera si el Rey no se ha movido aún
+        // Se verifica el enroque solo si el Rey no se ha movido previamente
         if (this.primerMovimiento) {
-            // Dependiendo del color, definimos la fila base y las posiciones de las torres
-            let filaEnroque = this.color === "blanca" ? "1" : "8";
-            let posInicialRey = "E" + filaEnroque;
-            // Solo evaluamos enroque si el Rey está en su posición inicial
+            let filaEnroque = this.color === "blanca" ? "1" : "8"; // Definición de la fila de enroque según el color
+            let posInicialRey = "E" + filaEnroque; // Posición inicial del Rey
+
+            // Evaluación si el Rey está en su posición inicial
             if (this.posicion.toUpperCase() === posInicialRey) {
 
                 // Enroque corto (torre en H1/H8)
                 const posTorreCorta = "H" + filaEnroque;
                 const torreCorta = tablero.obtenerPieza(posTorreCorta);
+                // Verificación si la Torre está presente y no se ha movido
                 if (torreCorta && torreCorta.constructor.name === "Torre" && torreCorta.primerMovimiento) {
-                    // Las casillas entre Rey y Torre deben estar vacías: F1 y G1 (o F8 y G8)
+                    // Comprobación de que las casillas intermedias entre el Rey y la Torre estén vacías
                     const posIntermedia1 = "F" + filaEnroque;
                     const posIntermedia2 = "G" + filaEnroque;
                     if (!tablero.obtenerPieza(posIntermedia1) && !tablero.obtenerPieza(posIntermedia2)) {
-                        // Agregamos la casilla destino del Rey en el enroque corto: G1 o G8
+                        // Agregar la casilla de destino del Rey en el enroque corto: G1 o G8
                         movimientosPosibles.push("G" + filaEnroque);
                     }
                 }
@@ -68,19 +80,20 @@ export class Rey extends Pieza {
                 // Enroque largo (torre en A1/A8)
                 const posTorreLarga = "A" + filaEnroque;
                 const torreLarga = tablero.obtenerPieza(posTorreLarga);
+                // Verificación si la Torre está presente y no se ha movido
                 if (torreLarga && torreLarga.constructor.name === "Torre" && torreLarga.primerMovimiento) {
-                    // Las casillas entre Rey y Torre deben estar vacías: D1, C1 y B1 (o D8, C8 y B8)
+                    // Comprobación de que las casillas intermedias entre el Rey y la Torre estén vacías
                     const posIntermedia1 = "D" + filaEnroque;
                     const posIntermedia2 = "C" + filaEnroque;
-                    const posIntermedia3 = "B" + filaEnroque; // En algunas reglas es necesario también comprobar esta
+                    const posIntermedia3 = "B" + filaEnroque; // Algunas reglas requieren verificar esta casilla también
                     if (!tablero.obtenerPieza(posIntermedia1) && !tablero.obtenerPieza(posIntermedia2) && !tablero.obtenerPieza(posIntermedia3)) {
-                        // Agregamos la casilla destino del Rey en el enroque largo: C1 o C8
+                        // Agregar la casilla de destino del Rey en el enroque largo: C1 o C8
                         movimientosPosibles.push("C" + filaEnroque);
                     }
                 }
             }
         }
 
-        return movimientosPosibles;
+        return movimientosPosibles; // Retorna las posiciones posibles para el movimiento del Rey
     }
 }
