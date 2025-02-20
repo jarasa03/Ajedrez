@@ -174,7 +174,6 @@ export class Peon extends Pieza {
                         nuevaPieza = new Caballo(this.color, this.posicion);
                         break;
                     default:
-                        console.error("Selección inválida"); // En caso de selección inválida
                         return;
                 }
 

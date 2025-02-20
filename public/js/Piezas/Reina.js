@@ -33,9 +33,7 @@ export class Reina extends Pieza {
         const movimientosPosibles = [];
 
         // Verificación de la columna para detectar cualquier error en la posición
-        console.log(`Posición inicial: Columna = ${columna} (Letra ${this.posicion[0]}), Fila = ${fila + 1}`);
         if (columna === -1) {
-            console.log("Error: Columna inválida.");
             return movimientosPosibles;
         }
 

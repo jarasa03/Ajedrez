@@ -37,9 +37,7 @@ export class Caballo extends Pieza {
         const movimientosPosibles = [];
 
         // Verificar si la columna está correctamente calculada
-        console.log(`Posición inicial: Columna = ${columna} (Letra ${this.posicion[0]}), Fila = ${fila + 1}`);
         if (columna === -1) {
-            console.log("Error: Columna inválida.");
             return movimientosPosibles;
         }
 
@@ -58,20 +56,13 @@ export class Caballo extends Pieza {
             if (nuevaColumna >= 0 && nuevaColumna < 8 && nuevaFila >= 0 && nuevaFila < 8) {
                 const nuevaPosicion = (arrayLetras[nuevaColumna] + (nuevaFila + 1)).toUpperCase(); // Convertir la fila a 1-8
 
-                console.log(`Comprobando: nuevaPosicion = ${nuevaPosicion}`);
-
                 // Obtener la pieza en la nueva casilla
                 const piezaEnDestino = tablero.obtenerPieza(nuevaPosicion);
 
                 // Si la casilla está vacía o tiene una pieza enemiga, el Caballo puede moverse allí
                 if (!piezaEnDestino || piezaEnDestino.color !== this.color) {
                     movimientosPosibles.push(nuevaPosicion);
-                    console.log(`Movimiento válido: ${nuevaPosicion}`);
-                } else {
-                    console.log(`Movimiento bloqueado por pieza aliada en: ${nuevaPosicion}`);
                 }
-            } else {
-                console.log(`Fuera de los límites: nuevaPosicion = ${arrayLetras[nuevaColumna]}${nuevaFila + 1}`);
             }
         }
 
