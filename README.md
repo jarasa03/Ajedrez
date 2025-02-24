@@ -8,8 +8,8 @@ Para ejecutar el proyecto en tu máquina local, sigue estos pasos:
 
 1. __Clonar el repositorio:__
     ```bash
-    git clone https://github.com/jarasa03/AjedrezJs.git
-    cd AjedrezJs
+    git clone https://github.com/jarasa03/Ajedrez.git
+    cd Ajedrez
     ```
 
 2. __Instalar dependencias:__
